@@ -14,7 +14,7 @@ environment:
 dependencies:
   http: '>=1.1.0 <2.0.0'
   meta: ^1.9.1
-  stack_trace: ^1.11.1
+  stack_trace: ^1.11.0
   uuid: ^4.0.0
 
 dev_dependencies:
