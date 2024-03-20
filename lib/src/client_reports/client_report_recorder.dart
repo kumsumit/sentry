@@ -46,7 +46,7 @@ class _QuantityKey {
   int get hashCode => Object.hash(reason.hashCode, category.hashCode);
 
   @override
-  bool operator ==(dynamic other) {
+  bool operator == (other) {
     return other is _QuantityKey &&
         other.reason == reason &&
         other.category == category;
