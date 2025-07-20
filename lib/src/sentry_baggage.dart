@@ -9,10 +9,7 @@ class SentryBaggage {
   static const int _maxChars = 8192;
   static const int _maxListMember = 64;
 
-  SentryBaggage(
-    this._keyValues, {
-    this.logger,
-  });
+  SentryBaggage(this._keyValues, {this.logger});
 
   final Map<String, String> _keyValues;
   final SentryLogger? logger;
@@ -78,10 +75,7 @@ class SentryBaggage {
     return SentryBaggage(keyValues, logger: logger);
   }
 
-  factory SentryBaggage.fromHeader(
-    String headerValue, {
-    SentryLogger? logger,
-  }) {
+  factory SentryBaggage.fromHeader(String headerValue, {SentryLogger? logger}) {
     final keyValues = _extractKeyValuesFromBaggageString(
       headerValue,
       logger: logger,
@@ -91,7 +85,7 @@ class SentryBaggage {
   }
 
   @internal
-  setValuesFromScope(Scope scope, SentryOptions options) {
+  void setValuesFromScope(Scope scope, SentryOptions options) {
     final propagationContext = scope.propagationContext;
     setTraceId(propagationContext.traceId.toString());
     if (options.dsn != null) {

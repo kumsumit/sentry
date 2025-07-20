@@ -20,19 +20,13 @@ void main() {
     test('toJson', () {
       final json = sentryRuntime.toJson();
 
-      expect(
-        MapEquality().equals(sentryRuntimeJson, json),
-        true,
-      );
+      expect(MapEquality().equals(sentryRuntimeJson, json), true);
     });
     test('fromJson', () {
       final sentryRuntime = SentryRuntime.fromJson(sentryRuntimeJson);
       final json = sentryRuntime.toJson();
 
-      expect(
-        MapEquality().equals(sentryRuntimeJson, json),
-        true,
-      );
+      expect(MapEquality().equals(sentryRuntimeJson, json), true);
     });
   });
 
@@ -42,10 +36,7 @@ void main() {
 
       final copy = data.copyWith();
 
-      expect(
-        MapEquality().equals(data.toJson(), copy.toJson()),
-        true,
-      );
+      expect(MapEquality().equals(data.toJson(), copy.toJson()), true);
     });
 
     test('copyWith takes new values', () {

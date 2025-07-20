@@ -42,10 +42,12 @@ void main() {
       final sentryEvent = SentryEvent(eventId: eventId);
       final sut = SentryEnvelopeItem.fromEvent(sentryEvent);
 
-      final expectedData = utf8.encode(jsonEncode(
-        sentryEvent.toJson(),
-        toEncodable: jsonSerializationFallback,
-      ));
+      final expectedData = utf8.encode(
+        jsonEncode(
+          sentryEvent.toJson(),
+          toEncodable: jsonSerializationFallback,
+        ),
+      );
       final actualData = await sut.dataFactory();
 
       final expectedLength = expectedData.length;
@@ -58,10 +60,7 @@ void main() {
     });
 
     test('fromTransaction', () async {
-      final context = SentryTransactionContext(
-        'name',
-        'op',
-      );
+      final context = SentryTransactionContext('name', 'op');
       final tracer = SentryTracer(context, MockHub());
       final tr = SentryTransaction(tracer);
       tr.contexts.device = SentryDevice(
@@ -70,10 +69,9 @@ void main() {
 
       final sut = SentryEnvelopeItem.fromTransaction(tr);
 
-      final expectedData = utf8.encode(jsonEncode(
-        tr.toJson(),
-        toEncodable: jsonSerializationFallback,
-      ));
+      final expectedData = utf8.encode(
+        jsonEncode(tr.toJson(), toEncodable: jsonSerializationFallback),
+      );
       final actualData = await sut.dataFactory();
 
       final expectedLength = expectedData.length;
@@ -88,17 +86,16 @@ void main() {
     test('fromClientReport', () async {
       final timestamp = DateTime(0);
       final discardedEvents = [
-        DiscardedEvent(DiscardReason.rateLimitBackoff, DataCategory.error, 1)
+        DiscardedEvent(DiscardReason.rateLimitBackoff, DataCategory.error, 1),
       ];
 
       final cr = ClientReport(timestamp, discardedEvents);
 
       final sut = SentryEnvelopeItem.fromClientReport(cr);
 
-      final expectedData = utf8.encode(jsonEncode(
-        cr.toJson(),
-        toEncodable: jsonSerializationFallback,
-      ));
+      final expectedData = utf8.encode(
+        jsonEncode(cr.toJson(), toEncodable: jsonSerializationFallback),
+      );
       final actualData = await sut.dataFactory();
 
       final expectedLength = expectedData.length;

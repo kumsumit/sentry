@@ -9,40 +9,50 @@ void main() {
   group('$containsTargetOrMatchesRegExp', () {
     final origins = ['localhost', '^(http|https)://api\\..*\$'];
 
-    test('origins contains the url when it contains one of the defined origins',
-        () {
-      expect(
+    test(
+      'origins contains the url when it contains one of the defined origins',
+      () {
+        expect(
           containsTargetOrMatchesRegExp(origins, 'http://localhost:8080/foo'),
-          isTrue);
-      expect(
+          isTrue,
+        );
+        expect(
           containsTargetOrMatchesRegExp(
-              origins, 'http://xxx.localhost:8080/foo'),
-          isTrue);
-    });
+            origins,
+            'http://xxx.localhost:8080/foo',
+          ),
+          isTrue,
+        );
+      },
+    );
 
     test('origins contain the url when it matches regex', () {
       expect(
-          containsTargetOrMatchesRegExp(origins, 'http://api.foo.bar:8080/foo'),
-          isTrue);
+        containsTargetOrMatchesRegExp(origins, 'http://api.foo.bar:8080/foo'),
+        isTrue,
+      );
       expect(
-          containsTargetOrMatchesRegExp(
-              origins, 'https://api.foo.bar:8080/foo'),
-          isTrue);
+        containsTargetOrMatchesRegExp(origins, 'https://api.foo.bar:8080/foo'),
+        isTrue,
+      );
       expect(
-          containsTargetOrMatchesRegExp(
-              origins, 'http://api.localhost:8080/foo'),
-          isTrue);
+        containsTargetOrMatchesRegExp(origins, 'http://api.localhost:8080/foo'),
+        isTrue,
+      );
       expect(
-          containsTargetOrMatchesRegExp(origins, 'ftp://api.foo.bar:8080/foo'),
-          isFalse);
+        containsTargetOrMatchesRegExp(origins, 'ftp://api.foo.bar:8080/foo'),
+        isFalse,
+      );
     });
 
     test('invalid regex do not throw', () {
       expect(
-          containsTargetOrMatchesRegExp(
-              ['AABB???', '^(http|https)://api\\..*\$'],
-              'http://api.foo.bar:8080/foo'),
-          isTrue);
+        containsTargetOrMatchesRegExp([
+          'AABB???',
+          '^(http|https)://api\\..*\$',
+        ], 'http://api.foo.bar:8080/foo'),
+        isTrue,
+      );
     });
 
     test('when no origins are defined, returns false for every url', () {
@@ -124,8 +134,10 @@ void main() {
 
       addBaggageHeaderFromSpan(sut, headers);
 
-      expect(headers[baggage!.name],
-          'other-vendor-value=foo,sentry-trace_id=${sut.context.traceId},sentry-public_key=abc,sentry-release=release,sentry-environment=environment,sentry-user_segment=segment,sentry-transaction=name,sentry-sample_rate=1');
+      expect(
+        headers[baggage!.name],
+        'other-vendor-value=foo,sentry-trace_id=${sut.context.traceId},sentry-public_key=abc,sentry-release=release,sentry-environment=environment,sentry-user_segment=segment,sentry-transaction=name,sentry-sample_rate=1',
+      );
     });
   });
 
@@ -161,10 +173,7 @@ class Fixture {
     'name',
     'op',
     transactionNameSource: SentryTransactionNameSource.custom,
-    samplingDecision: SentryTracesSamplingDecision(
-      true,
-      sampleRate: 1.0,
-    ),
+    samplingDecision: SentryTracesSamplingDecision(true, sampleRate: 1.0),
   );
 
   final _options = SentryOptions(dsn: fakeDsn)
@@ -175,10 +184,7 @@ class Fixture {
 
   final _client = MockSentryClient();
 
-  final _user = SentryUser(
-    id: 'id',
-    segment: 'segment',
-  );
+  final _user = SentryUser(id: 'id', segment: 'segment');
 
   SentryTracer getSut() {
     _hub = Hub(_options);

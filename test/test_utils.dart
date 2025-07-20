@@ -28,9 +28,10 @@ void testHeaders(
 }) {
   final expectedHeaders = <String, String>{
     'Content-Type': 'application/x-sentry-envelope',
-    'X-Sentry-Auth': 'Sentry sentry_version=7, '
+    'X-Sentry-Auth':
+        'Sentry sentry_version=7, '
         'sentry_client=$sdkName/$sdkVersion, '
-        'sentry_key=public'
+        'sentry_key=public',
   };
 
   if (withSecret) {
@@ -117,10 +118,14 @@ Future testCaptureException(
 
   final topFrame =
       (stacktrace['frames'] as Iterable<dynamic>).last as Map<String, dynamic>;
-  expect(
-    topFrame.keys,
-    <String>['filename', 'function', 'lineno', 'colno', 'abs_path', 'in_app'],
-  );
+  expect(topFrame.keys, <String>[
+    'filename',
+    'function',
+    'lineno',
+    'colno',
+    'abs_path',
+    'in_app',
+  ]);
 
   if (isWeb) {
     // can't test the full url
@@ -142,16 +147,18 @@ Future testCaptureException(
       'version': sdkVersion,
       'name': sdkName(isWeb),
       'packages': [
-        {'name': 'pub:sentry', 'version': sdkVersion}
-      ]
+        {'name': 'pub:sentry', 'version': sdkVersion},
+      ],
     });
     expect(data['server_name'], 'test.server.com');
     expect(data['release'], '1.2.3');
     expect(data['environment'], 'staging');
 
     expect(data['exception']['values'].first['type'], 'ArgumentError');
-    expect(data['exception']['values'].first['value'],
-        'Invalid argument(s): Test error');
+    expect(
+      data['exception']['values'].first['value'],
+      'Invalid argument(s): Test error',
+    );
   } else {
     expect(topFrame['abs_path'], 'test_utils.dart');
     expect(topFrame['filename'], 'test_utils.dart');
@@ -164,15 +171,17 @@ Future testCaptureException(
       'version': sdkVersion,
       'name': 'sentry.dart',
       'packages': [
-        {'name': 'pub:sentry', 'version': sdkVersion}
-      ]
+        {'name': 'pub:sentry', 'version': sdkVersion},
+      ],
     });
     expect(data['server_name'], 'test.server.com');
     expect(data['release'], '1.2.3');
     expect(data['environment'], 'staging');
     expect(data['exception']['values'].first['type'], 'ArgumentError');
-    expect(data['exception']['values'].first['value'],
-        'Invalid argument(s): Test error');
+    expect(
+      data['exception']['values'].first['value'],
+      'Invalid argument(s): Test error',
+    );
   }
 
   expect(topFrame['lineno'], greaterThan(0));
@@ -276,8 +285,10 @@ void runTest({Codec<List<int>, List<int>?>? gzip, bool isWeb = false}) {
     try {
       throw ArgumentError('Test error');
     } catch (error, stackTrace) {
-      final sentryId =
-          await client.captureException(error, stackTrace: stackTrace);
+      final sentryId = await client.captureException(
+        error,
+        stackTrace: stackTrace,
+      );
       expect('$sentryId', 'testeventid');
     }
 
@@ -293,11 +304,13 @@ void runTest({Codec<List<int>, List<int>?>? gzip, bool isWeb = false}) {
     client.close();
   });
 
-  test('sends an exception report (compressed)', () async {
-    await testCaptureException(true, gzip, isWeb);
-  }, onPlatform: <String, Skip>{
-    'browser': const Skip(),
-  });
+  test(
+    'sends an exception report (compressed)',
+    () async {
+      await testCaptureException(true, gzip, isWeb);
+    },
+    onPlatform: <String, Skip>{'browser': const Skip()},
+  );
 
   test('sends an exception report (uncompressed)', () async {
     await testCaptureException(false, gzip, isWeb);
@@ -308,9 +321,11 @@ void runTest({Codec<List<int>, List<int>?>? gzip, bool isWeb = false}) {
 
     final httpMock = MockClient((http.Request request) async {
       if (request.method == 'POST') {
-        return http.Response('', 401, headers: <String, String>{
-          'x-sentry-error': 'Invalid api key',
-        });
+        return http.Response(
+          '',
+          401,
+          headers: <String, String>{'x-sentry-error': 'Invalid api key'},
+        );
       }
       fail(
         'Unexpected request on ${request.method} ${request.url} in HttpMock',
@@ -318,9 +333,7 @@ void runTest({Codec<List<int>, List<int>?>? gzip, bool isWeb = false}) {
     });
 
     final client = SentryClient(
-      SentryOptions(
-        dsn: testDsn,
-      )
+      SentryOptions(dsn: testDsn)
         ..httpClient = httpMock
         ..clock = fakeClockProvider
         ..compressPayload = false
@@ -332,8 +345,10 @@ void runTest({Codec<List<int>, List<int>?>? gzip, bool isWeb = false}) {
     try {
       throw ArgumentError('Test error');
     } catch (error, stackTrace) {
-      final sentryId =
-          await client.captureException(error, stackTrace: stackTrace);
+      final sentryId = await client.captureException(
+        error,
+        stackTrace: stackTrace,
+      );
       expect('$sentryId', '00000000000000000000000000000000');
     }
 
@@ -355,9 +370,7 @@ void runTest({Codec<List<int>, List<int>?>? gzip, bool isWeb = false}) {
         return http.Response(
           '',
           401,
-          headers: <String, String>{
-            'x-sentry-error': 'Invalid api key',
-          },
+          headers: <String, String>{'x-sentry-error': 'Invalid api key'},
         );
       }
       fail(
@@ -379,9 +392,7 @@ void runTest({Codec<List<int>, List<int>?>? gzip, bool isWeb = false}) {
       data: <String, String>{'foo': 'bar'},
     );
 
-    final options = SentryOptions(
-      dsn: testDsn,
-    )
+    final options = SentryOptions(dsn: testDsn)
       ..httpClient = httpMock
       ..clock = fakeClockProvider
       ..compressPayload = false
@@ -408,19 +419,13 @@ void runTest({Codec<List<int>, List<int>?>? gzip, bool isWeb = false}) {
       final scope = Scope(options);
       await scope.setUser(clientUser);
 
-      await client.captureEvent(
-        eventWithoutContext,
-        scope: scope,
-      );
+      await client.captureEvent(eventWithoutContext, scope: scope);
       expect(loggedUserId, clientUser.id);
 
       final secondScope = Scope(options);
       await secondScope.setUser(clientUser);
 
-      await client.captureEvent(
-        eventWithContext,
-        scope: secondScope,
-      );
+      await client.captureEvent(eventWithContext, scope: secondScope);
       expect(loggedUserId, eventUser.id);
     }
 

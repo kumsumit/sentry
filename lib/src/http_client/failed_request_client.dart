@@ -73,8 +73,8 @@ class FailedRequestClient extends BaseClient {
     this.failedRequestTargets = SentryHttpClient.defaultFailedRequestTargets,
     Client? client,
     Hub? hub,
-  })  : _hub = hub ?? HubAdapter(),
-        _client = client ?? Client() {
+  }) : _hub = hub ?? HubAdapter(),
+       _client = client ?? Client() {
     if (_hub.options.captureFailedRequests) {
       _hub.options.sdk.addIntegration('HTTPClientError');
     }
@@ -123,12 +123,13 @@ class FailedRequestClient extends BaseClient {
   }
 
   Future<void> _captureEventIfNeeded(
-      BaseRequest request,
-      int? statusCode,
-      Object? exception,
-      StackTrace? stackTrace,
-      StreamedResponse? response,
-      Duration duration) async {
+    BaseRequest request,
+    int? statusCode,
+    Object? exception,
+    StackTrace? stackTrace,
+    StreamedResponse? response,
+    Duration duration,
+  ) async {
     if (!_hub.options.captureFailedRequests) {
       return;
     }
@@ -139,7 +140,9 @@ class FailedRequestClient extends BaseClient {
         return;
       }
       if (!containsTargetOrMatchesRegExp(
-          failedRequestTargets, request.url.toString())) {
+        failedRequestTargets,
+        request.url.toString(),
+      )) {
         return;
       }
     }
@@ -181,10 +184,7 @@ class FailedRequestClient extends BaseClient {
       },
     );
 
-    final mechanism = Mechanism(
-      type: 'SentryHttpClient',
-      description: reason,
-    );
+    final mechanism = Mechanism(type: 'SentryHttpClient', description: reason);
 
     bool? snapshot;
     if (exception is SentryHttpClientError) {
@@ -214,11 +214,7 @@ class FailedRequestClient extends BaseClient {
       hint.set(TypeCheckHint.httpResponse, response);
     }
 
-    await _hub.captureEvent(
-      event,
-      stackTrace: stackTrace,
-      hint: hint,
-    );
+    await _hub.captureEvent(event, stackTrace: stackTrace, hint: hint);
   }
 
   // Types of Request can be found here:

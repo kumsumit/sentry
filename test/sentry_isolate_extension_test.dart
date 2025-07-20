@@ -1,4 +1,6 @@
 @TestOn('vm')
+library;
+
 import 'dart:isolate';
 
 import 'package:sentry/src/sentry_isolate_extension.dart';
@@ -21,8 +23,11 @@ void main() {
         throw StateError(message);
       };
 
-      final isolate =
-          await Isolate.spawn(throwingClosure, "message", paused: true);
+      final isolate = await Isolate.spawn(
+        throwingClosure,
+        "message",
+        paused: true,
+      );
       isolate.addSentryErrorListener(hub: fixture.hub);
       isolate.resume(isolate.pauseCapability!);
 
@@ -36,8 +41,11 @@ void main() {
         throw StateError(message);
       };
 
-      final isolate =
-          await Isolate.spawn(throwingClosure, "message", paused: true);
+      final isolate = await Isolate.spawn(
+        throwingClosure,
+        "message",
+        paused: true,
+      );
       final port = isolate.addSentryErrorListener(hub: fixture.hub);
       isolate.removeSentryErrorListener(port);
       isolate.resume(isolate.pauseCapability!);

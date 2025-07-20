@@ -7,9 +7,7 @@ import 'mocks/mock_hub.dart';
 void main() {
   final fixture = Fixture();
 
-  SentryTracer _createTracer({
-    bool? sampled = true,
-  }) {
+  SentryTracer _createTracer({bool? sampled = true}) {
     final context = SentryTransactionContext(
       'name',
       'op',

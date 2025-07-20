@@ -37,16 +37,13 @@ class HttpTransport implements Transport {
   }
 
   HttpTransport._(this._options, this._rateLimiter)
-      : _dsn = Dsn.parse(_options.dsn!),
-        _recorder = _options.recorder,
-        _headers = _buildHeaders(
-          _options.platformChecker.isWeb,
-          _options.sentryClientName,
-        ) {
-    _credentialBuilder = _CredentialBuilder(
-      _dsn,
-      _options.sentryClientName,
-    );
+    : _dsn = Dsn.parse(_options.dsn!),
+      _recorder = _options.recorder,
+      _headers = _buildHeaders(
+        _options.platformChecker.isWeb,
+        _options.sentryClientName,
+      ) {
+    _credentialBuilder = _CredentialBuilder(_dsn, _options.sentryClientName);
   }
 
   @override
@@ -77,7 +74,9 @@ class HttpTransport implements Transport {
 
       if (response.statusCode >= 400 && response.statusCode != 429) {
         _recorder.recordLostEvent(
-            DiscardReason.networkError, DataCategory.error);
+          DiscardReason.networkError,
+          DataCategory.error,
+        );
       }
 
       return SentryId.empty();
@@ -96,7 +95,8 @@ class HttpTransport implements Transport {
   }
 
   Future<StreamedRequest> _createStreamedRequest(
-      SentryEnvelope envelope) async {
+    SentryEnvelope envelope,
+  ) async {
     final streamedRequest = StreamedRequest('POST', _dsn.postUri);
 
     if (_options.compressPayload) {
@@ -128,7 +128,10 @@ class HttpTransport implements Transport {
     // 50::key is also a valid case, it means no categories and it should apply to all of them
     final sentryRateLimitHeader = response.headers['X-Sentry-Rate-Limits'];
     _rateLimiter.updateRetryAfterLimits(
-        sentryRateLimitHeader, retryAfterHeader, response.statusCode);
+      sentryRateLimitHeader,
+      retryAfterHeader,
+      response.statusCode,
+    );
   }
 }
 
@@ -152,7 +155,8 @@ class _CredentialBuilder {
     String? secretKey,
     required String sdkIdentifier,
   }) {
-    var header = 'Sentry sentry_version=7, sentry_client=$sdkIdentifier, '
+    var header =
+        'Sentry sentry_version=7, sentry_client=$sdkIdentifier, '
         'sentry_key=$publicKey';
 
     if (secretKey != null) {
@@ -163,10 +167,7 @@ class _CredentialBuilder {
   }
 
   Map<String, String> configure(Map<String, String> headers) {
-    return headers
-      ..addAll(
-        <String, String>{'X-Sentry-Auth': _authHeader},
-      );
+    return headers..addAll(<String, String>{'X-Sentry-Auth': _authHeader});
   }
 }
 

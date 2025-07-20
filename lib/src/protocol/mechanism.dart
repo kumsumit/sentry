@@ -52,8 +52,8 @@ class Mechanism {
     this.synthetic,
     Map<String, dynamic>? meta,
     Map<String, dynamic>? data,
-  })  : _meta = meta != null ? Map.from(meta) : null,
-        _data = data != null ? Map.from(data) : null;
+  }) : _meta = meta != null ? Map.from(meta) : null,
+       _data = data != null ? Map.from(data) : null;
 
   Mechanism copyWith({
     String? type,
@@ -63,16 +63,15 @@ class Mechanism {
     Map<String, dynamic>? meta,
     Map<String, dynamic>? data,
     bool? synthetic,
-  }) =>
-      Mechanism(
-        type: type ?? this.type,
-        description: description ?? this.description,
-        helpLink: helpLink ?? this.helpLink,
-        handled: handled ?? this.handled,
-        meta: meta ?? this.meta,
-        data: data ?? this.data,
-        synthetic: synthetic ?? this.synthetic,
-      );
+  }) => Mechanism(
+    type: type ?? this.type,
+    description: description ?? this.description,
+    helpLink: helpLink ?? this.helpLink,
+    handled: handled ?? this.handled,
+    meta: meta ?? this.meta,
+    data: data ?? this.data,
+    synthetic: synthetic ?? this.synthetic,
+  );
 
   /// Deserializes a [Mechanism] from JSON [Map].
   factory Mechanism.fromJson(Map<String, dynamic> json) {

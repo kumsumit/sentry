@@ -14,7 +14,9 @@ class ClientReportRecorder {
   final Map<_QuantityKey, int> _quantities = {};
 
   void recordLostEvent(
-      final DiscardReason reason, final DataCategory category) {
+    final DiscardReason reason,
+    final DataCategory category,
+  ) {
     final key = _QuantityKey(reason, category);
     var current = _quantities[key] ?? 0;
     _quantities[key] = current + 1;
@@ -25,10 +27,12 @@ class ClientReportRecorder {
       return null;
     }
 
-    final events = _quantities.keys.map((key) {
-      final quantity = _quantities[key] ?? 0;
-      return DiscardedEvent(key.reason, key.category, quantity);
-    }).toList(growable: false);
+    final events = _quantities.keys
+        .map((key) {
+          final quantity = _quantities[key] ?? 0;
+          return DiscardedEvent(key.reason, key.category, quantity);
+        })
+        .toList(growable: false);
 
     _quantities.clear();
 
@@ -46,7 +50,7 @@ class _QuantityKey {
   int get hashCode => Object.hash(reason.hashCode, category.hashCode);
 
   @override
-  bool operator == (other) {
+  bool operator ==(other) {
     return other is _QuantityKey &&
         other.reason == reason &&
         other.category == category;

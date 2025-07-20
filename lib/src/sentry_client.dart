@@ -54,7 +54,7 @@ class SentryClient {
 
   /// Instantiates a client using [SentryOptions]
   SentryClient._(this._options)
-      : _random = _options.sampleRate == null ? null : Random();
+    : _random = _options.sampleRate == null ? null : Random();
 
   /// Reports an [event] to Sentry.io.
   Future<SentryId> captureEvent(
@@ -80,7 +80,9 @@ class SentryClient {
       preparedEvent = await scope.applyToEvent(preparedEvent, hint: hint);
     } else {
       _options.logger(
-          SentryLevel.debug, 'No scope to apply on event was provided');
+        SentryLevel.debug,
+        'No scope to apply on event was provided',
+      );
     }
 
     // dropped by scope event processors
@@ -99,10 +101,7 @@ class SentryClient {
       return _sentryId;
     }
 
-    preparedEvent = await _runBeforeSend(
-      preparedEvent,
-      hint: hint,
-    );
+    preparedEvent = await _runBeforeSend(preparedEvent, hint: hint);
 
     // dropped by beforeSend
     if (preparedEvent == null) {
@@ -126,13 +125,16 @@ class SentryClient {
     var traceContext = scope?.span?.traceContext();
     if (traceContext == null) {
       if (scope?.propagationContext.baggage == null) {
-        scope?.propagationContext.baggage =
-            SentryBaggage({}, logger: _options.logger);
+        scope?.propagationContext.baggage = SentryBaggage(
+          {},
+          logger: _options.logger,
+        );
         scope?.propagationContext.baggage?.setValuesFromScope(scope, _options);
       }
       if (scope != null) {
         traceContext = SentryTraceContextHeader.fromBaggage(
-            scope.propagationContext.baggage!);
+          scope.propagationContext.baggage!,
+        );
       }
     }
 
@@ -173,8 +175,10 @@ class SentryClient {
     final isolateId = isolateName?.hashCode;
 
     if (event.throwableMechanism != null) {
-      final extractedExceptions = _exceptionFactory.extractor
-          .flatten(event.throwableMechanism, stackTrace);
+      final extractedExceptions = _exceptionFactory.extractor.flatten(
+        event.throwableMechanism,
+        stackTrace,
+      );
 
       final sentryExceptions = <SentryException>[];
       final sentryThreads = <SentryThread>[];
@@ -207,10 +211,7 @@ class SentryClient {
 
       return event.copyWith(
         exceptions: [...?event.exceptions, ...sentryExceptions],
-        threads: [
-          ...?event.threads,
-          ...sentryThreads,
-        ],
+        threads: [...?event.threads, ...sentryThreads],
       );
     }
 
@@ -222,16 +223,18 @@ class SentryClient {
       final frames = _stackTraceFactory.getStackFrames(stackTrace);
 
       if (frames.isNotEmpty) {
-        event = event.copyWith(threads: [
-          ...?event.threads,
-          SentryThread(
-            name: isolateName,
-            id: isolateId,
-            crashed: false,
-            current: true,
-            stacktrace: SentryStackTrace(frames: frames),
-          ),
-        ]);
+        event = event.copyWith(
+          threads: [
+            ...?event.threads,
+            SentryThread(
+              name: isolateName,
+              id: isolateId,
+              crashed: false,
+              current: true,
+              stacktrace: SentryStackTrace(frames: frames),
+            ),
+          ],
+        );
       }
     }
 
@@ -307,7 +310,9 @@ class SentryClient {
           await scope.applyToEvent(preparedTransaction) as SentryTransaction?;
     } else {
       _options.logger(
-          SentryLevel.debug, 'No scope to apply on transaction was provided');
+        SentryLevel.debug,
+        'No scope to apply on transaction was provided',
+      );
     }
 
     // dropped by scope event processors
@@ -315,10 +320,12 @@ class SentryClient {
       return _sentryId;
     }
 
-    preparedTransaction = await _runEventProcessors(
-      preparedTransaction,
-      eventProcessors: _options.eventProcessors,
-    ) as SentryTransaction?;
+    preparedTransaction =
+        await _runEventProcessors(
+              preparedTransaction,
+              eventProcessors: _options.eventProcessors,
+            )
+            as SentryTransaction?;
 
     // dropped by event processors
     if (preparedTransaction == null) {
@@ -367,10 +374,7 @@ class SentryClient {
 
   void close() => _options.httpClient.close();
 
-  Future<SentryEvent?> _runBeforeSend(
-    SentryEvent event, {
-    Hint? hint,
-  }) async {
+  Future<SentryEvent?> _runBeforeSend(SentryEvent event, {Hint? hint}) async {
     SentryEvent? eventOrTransaction = event;
 
     final beforeSend = _options.beforeSend;
@@ -494,11 +498,13 @@ class SentryClient {
       return false;
     }
 
-    final mechanisms =
-        (event.exceptions ?? []).map((e) => e.mechanism).whereType<Mechanism>();
+    final mechanisms = (event.exceptions ?? [])
+        .map((e) => e.mechanism)
+        .whereType<Mechanism>();
     final hasNoMechanism = mechanisms.isEmpty;
-    final hasOnlyHandledMechanism =
-        mechanisms.every((e) => (e.handled ?? true));
+    final hasOnlyHandledMechanism = mechanisms.every(
+      (e) => (e.handled ?? true),
+    );
     return hasNoMechanism || hasOnlyHandledMechanism;
   }
 

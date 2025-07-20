@@ -13,9 +13,9 @@ void main() {
       throw StateError('a state error');
     } catch (err, stacktrace) {
       sentryException = fixture.getSut().getSentryException(
-            err,
-            stackTrace: stacktrace,
-          );
+        err,
+        stackTrace: stacktrace,
+      );
     }
 
     expect(sentryException.type, 'StateError');
@@ -28,9 +28,9 @@ void main() {
       throw StateError('a state error');
     } catch (err, _) {
       sentryException = fixture.getSut().getSentryException(
-            err,
-            stackTrace: '',
-          );
+        err,
+        stackTrace: '',
+      );
     }
 
     expect(sentryException.type, 'StateError');
@@ -43,9 +43,9 @@ void main() {
       throw StateError('a state error');
     } catch (err, _) {
       sentryException = fixture.getSut().getSentryException(
-            err,
-            stackTrace: '',
-          );
+        err,
+        stackTrace: '',
+      );
     }
 
     expect(sentryException.type, 'StateError');
@@ -74,20 +74,21 @@ void main() {
   });
 
   test('should extract stackTrace from custom exception', () {
-    fixture.options
-        .addExceptionStackTraceExtractor(CustomExceptionStackTraceExtractor());
+    fixture.options.addExceptionStackTraceExtractor(
+      CustomExceptionStackTraceExtractor(),
+    );
 
     SentryException sentryException;
     try {
-      throw CustomException(StackTrace.fromString('''
+      throw CustomException(
+        StackTrace.fromString('''
 #0      baz (file:///pathto/test.dart:50:3)
 <asynchronous suspension>
 #1      bar (file:///pathto/test.dart:46:9)
-      '''));
+      '''),
+      );
     } catch (err, _) {
-      sentryException = fixture.getSut().getSentryException(
-            err,
-          );
+      sentryException = fixture.getSut().getSentryException(err);
     }
 
     expect(sentryException.type, 'CustomException');
@@ -101,36 +102,43 @@ void main() {
     try {
       throw Object();
     } catch (err, _) {
-      sentryException = fixture.getSut().getSentryException(
-            err,
-          );
+      sentryException = fixture.getSut().getSentryException(err);
     }
 
     expect(sentryException.type, 'Object');
     expect(sentryException.stackTrace, isNotNull);
   });
 
-  test('getSentryException with not thrown Error and frames', () {
-    final sentryException = fixture.getSut().getSentryException(
-          CustomError(),
-        );
+  test(
+    'getSentryException with not thrown Error and frames',
+    () {
+      final sentryException = fixture.getSut().getSentryException(
+        CustomError(),
+      );
 
-    expect(sentryException.type, 'CustomError');
-    expect(sentryException.stackTrace?.frames, isNotEmpty);
+      expect(sentryException.type, 'CustomError');
+      expect(sentryException.stackTrace?.frames, isNotEmpty);
 
-    // skip on browser because [StackTrace.current] still returns null
-  }, onPlatform: {'browser': Skip()});
+      // skip on browser because [StackTrace.current] still returns null
+    },
+    onPlatform: {'browser': Skip()},
+  );
 
-  test('getSentryException with not thrown Error and empty frames', () {
-    final sentryException = fixture
-        .getSut()
-        .getSentryException(CustomError(), stackTrace: StackTrace.empty);
+  test(
+    'getSentryException with not thrown Error and empty frames',
+    () {
+      final sentryException = fixture.getSut().getSentryException(
+        CustomError(),
+        stackTrace: StackTrace.empty,
+      );
 
-    expect(sentryException.type, 'CustomError');
-    expect(sentryException.stackTrace?.frames, isNotEmpty);
+      expect(sentryException.type, 'CustomError');
+      expect(sentryException.stackTrace?.frames, isNotEmpty);
 
-    // skip on browser because [StackTrace.current] still returns null
-  }, onPlatform: {'browser': Skip()});
+      // skip on browser because [StackTrace.current] still returns null
+    },
+    onPlatform: {'browser': Skip()},
+  );
 
   test('reads the snapshot from the mechanism', () {
     final error = StateError('test-error');
@@ -146,9 +154,9 @@ void main() {
       throw throwableMechanism;
     } catch (err, stackTrace) {
       sentryException = fixture.getSut().getSentryException(
-            throwableMechanism,
-            stackTrace: stackTrace,
-          );
+        throwableMechanism,
+        stackTrace: stackTrace,
+      );
     }
 
     expect(sentryException.stackTrace!.snapshot, true);
@@ -162,9 +170,9 @@ void main() {
     } catch (err, stacktrace) {
       throwable = err;
       sentryException = fixture.getSut().getSentryException(
-            err,
-            stackTrace: stacktrace,
-          );
+        err,
+        stackTrace: stacktrace,
+      );
     }
 
     expect(sentryException.throwable, throwable);
@@ -172,8 +180,10 @@ void main() {
 
   test('should remove stackTrace string from value', () {
     final stackTraceError = StackTraceError();
-    final sentryException = fixture.getSut().getSentryException(stackTraceError,
-        stackTrace: StackTraceErrorStackTrace());
+    final sentryException = fixture.getSut().getSentryException(
+      stackTraceError,
+      stackTrace: StackTraceErrorStackTrace(),
+    );
     final expected =
         "NetworkError(type: NetworkErrorType.unknown, error: Instance of 'iH')";
 
@@ -183,8 +193,10 @@ void main() {
   test('no empty value', () {
     final stackTraceError = StackTraceError();
     stackTraceError.prefix = "";
-    final sentryException = fixture.getSut().getSentryException(stackTraceError,
-        stackTrace: StackTraceErrorStackTrace());
+    final sentryException = fixture.getSut().getSentryException(
+      stackTraceError,
+      stackTrace: StackTraceErrorStackTrace(),
+    );
 
     expect(sentryException.value, isNull);
   });

@@ -15,22 +15,15 @@ class SentryTransactionContext extends SentrySpanContext {
   SentryTransactionContext(
     this.name,
     String operation, {
-    String? description,
+    super.description,
     this.parentSamplingDecision,
-    SentryId? traceId,
-    SpanId? spanId,
-    SpanId? parentSpanId,
+    super.traceId,
+    super.spanId,
+    super.parentSpanId,
     this.transactionNameSource,
     this.samplingDecision,
-    String? origin,
-  }) : super(
-          operation: operation,
-          description: description,
-          traceId: traceId,
-          spanId: spanId,
-          parentSpanId: parentSpanId,
-          origin: origin,
-        );
+    super.origin,
+  }) : super(operation: operation);
 
   factory SentryTransactionContext.fromSentryTrace(
     String name,
@@ -68,19 +61,17 @@ class SentryTransactionContext extends SentrySpanContext {
     SentryTransactionNameSource? transactionNameSource,
     SentryTracesSamplingDecision? samplingDecision,
     String? origin,
-  }) =>
-      SentryTransactionContext(
-        name ?? this.name,
-        operation ?? this.operation,
-        description: description ?? this.description,
-        parentSamplingDecision:
-            parentSamplingDecision ?? this.parentSamplingDecision,
-        traceId: traceId ?? this.traceId,
-        spanId: spanId ?? this.spanId,
-        parentSpanId: parentSpanId ?? this.parentSpanId,
-        transactionNameSource:
-            transactionNameSource ?? this.transactionNameSource,
-        samplingDecision: samplingDecision ?? this.samplingDecision,
-        origin: origin ?? this.origin,
-      );
+  }) => SentryTransactionContext(
+    name ?? this.name,
+    operation ?? this.operation,
+    description: description ?? this.description,
+    parentSamplingDecision:
+        parentSamplingDecision ?? this.parentSamplingDecision,
+    traceId: traceId ?? this.traceId,
+    spanId: spanId ?? this.spanId,
+    parentSpanId: parentSpanId ?? this.parentSpanId,
+    transactionNameSource: transactionNameSource ?? this.transactionNameSource,
+    samplingDecision: samplingDecision ?? this.samplingDecision,
+    origin: origin ?? this.origin,
+  );
 }

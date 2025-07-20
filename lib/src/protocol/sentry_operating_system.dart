@@ -71,14 +71,14 @@ class SentryOperatingSystem {
   }
 
   SentryOperatingSystem clone() => SentryOperatingSystem(
-        name: name,
-        version: version,
-        build: build,
-        kernelVersion: kernelVersion,
-        rooted: rooted,
-        rawDescription: rawDescription,
-        theme: theme,
-      );
+    name: name,
+    version: version,
+    build: build,
+    kernelVersion: kernelVersion,
+    rooted: rooted,
+    rawDescription: rawDescription,
+    theme: theme,
+  );
 
   SentryOperatingSystem copyWith({
     String? name,
@@ -88,14 +88,13 @@ class SentryOperatingSystem {
     bool? rooted,
     String? rawDescription,
     String? theme,
-  }) =>
-      SentryOperatingSystem(
-        name: name ?? this.name,
-        version: version ?? this.version,
-        build: build ?? this.build,
-        kernelVersion: kernelVersion ?? this.kernelVersion,
-        rooted: rooted ?? this.rooted,
-        rawDescription: rawDescription ?? this.rawDescription,
-        theme: theme ?? this.theme,
-      );
+  }) => SentryOperatingSystem(
+    name: name ?? this.name,
+    version: version ?? this.version,
+    build: build ?? this.build,
+    kernelVersion: kernelVersion ?? this.kernelVersion,
+    rooted: rooted ?? this.rooted,
+    rawDescription: rawDescription ?? this.rawDescription,
+    theme: theme ?? this.theme,
+  );
 }

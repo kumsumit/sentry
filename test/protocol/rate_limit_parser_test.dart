@@ -13,8 +13,9 @@ void main() {
     });
 
     test('single rate limit with multiple categories', () {
-      final sut =
-          RateLimitParser('50:transaction;session').parseRateLimitHeader();
+      final sut = RateLimitParser(
+        '50:transaction;session',
+      ).parseRateLimitHeader();
 
       expect(sut.length, 2);
       expect(sut[0].category, DataCategory.transaction);
@@ -38,8 +39,9 @@ void main() {
     });
 
     test('multiple rate limits', () {
-      final sut =
-          RateLimitParser('50:transaction, 70:session').parseRateLimitHeader();
+      final sut = RateLimitParser(
+        '50:transaction, 70:session',
+      ).parseRateLimitHeader();
 
       expect(sut.length, 2);
       expect(sut[0].category, DataCategory.transaction);
@@ -49,8 +51,9 @@ void main() {
     });
 
     test('multiple rate limits with same category', () {
-      final sut = RateLimitParser('50:transaction, 70:transaction')
-          .parseRateLimitHeader();
+      final sut = RateLimitParser(
+        '50:transaction, 70:transaction',
+      ).parseRateLimitHeader();
 
       expect(sut.length, 2);
       expect(sut[0].category, DataCategory.transaction);
@@ -72,8 +75,10 @@ void main() {
 
       expect(sut.length, 1);
       expect(sut[0].category, DataCategory.transaction);
-      expect(sut[0].duration.inMilliseconds,
-          RateLimitParser.httpRetryAfterDefaultDelay.inMilliseconds);
+      expect(
+        sut[0].duration.inMilliseconds,
+        RateLimitParser.httpRetryAfterDefaultDelay.inMilliseconds,
+      );
     });
   });
 
@@ -83,8 +88,10 @@ void main() {
 
       expect(sut.length, 1);
       expect(sut[0].category, DataCategory.all);
-      expect(sut[0].duration.inMilliseconds,
-          RateLimitParser.httpRetryAfterDefaultDelay.inMilliseconds);
+      expect(
+        sut[0].duration.inMilliseconds,
+        RateLimitParser.httpRetryAfterDefaultDelay.inMilliseconds,
+      );
     });
 
     test('parseable returns default category with duration in millis', () {
@@ -100,8 +107,10 @@ void main() {
 
       expect(sut.length, 1);
       expect(sut[0].category, DataCategory.all);
-      expect(sut[0].duration.inMilliseconds,
-          RateLimitParser.httpRetryAfterDefaultDelay.inMilliseconds);
+      expect(
+        sut[0].duration.inMilliseconds,
+        RateLimitParser.httpRetryAfterDefaultDelay.inMilliseconds,
+      );
     });
   });
 }

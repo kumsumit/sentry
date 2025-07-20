@@ -40,11 +40,10 @@ class SdkInfo {
     int? versionMajor,
     int? versionMinor,
     int? versionPatchlevel,
-  }) =>
-      SdkInfo(
-        sdkName: sdkName ?? this.sdkName,
-        versionMajor: versionMajor ?? this.versionMajor,
-        versionMinor: versionMinor ?? this.versionMinor,
-        versionPatchlevel: versionPatchlevel ?? this.versionPatchlevel,
-      );
+  }) => SdkInfo(
+    sdkName: sdkName ?? this.sdkName,
+    versionMajor: versionMajor ?? this.versionMajor,
+    versionMinor: versionMinor ?? this.versionMinor,
+    versionPatchlevel: versionPatchlevel ?? this.versionPatchlevel,
+  );
 }

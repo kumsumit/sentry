@@ -21,19 +21,13 @@ void main() {
     test('toJson', () {
       final json = sdkInfo.toJson();
 
-      expect(
-        MapEquality().equals(sdkInfoJson, json),
-        true,
-      );
+      expect(MapEquality().equals(sdkInfoJson, json), true);
     });
     test('fromJson', () {
       final sdkInfo = SdkInfo.fromJson(sdkInfoJson);
       final json = sdkInfo.toJson();
 
-      expect(
-        MapEquality().equals(sdkInfoJson, json),
-        true,
-      );
+      expect(MapEquality().equals(sdkInfoJson, json), true);
     });
   });
 
@@ -43,10 +37,7 @@ void main() {
 
       final copy = data.copyWith();
 
-      expect(
-        MapEquality().equals(data.toJson(), copy.toJson()),
-        true,
-      );
+      expect(MapEquality().equals(data.toJson(), copy.toJson()), true);
     });
     test('copyWith takes new values', () {
       final data = sdkInfo;

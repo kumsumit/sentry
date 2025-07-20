@@ -119,20 +119,19 @@ class DebugImage {
     String? codeId,
     int? cpuType,
     int? cpuSubtype,
-  }) =>
-      DebugImage(
-        uuid: uuid ?? this.uuid,
-        name: name ?? this.name,
-        type: type ?? this.type,
-        debugId: debugId ?? this.debugId,
-        debugFile: debugFile ?? this.debugFile,
-        codeFile: codeFile ?? this.codeFile,
-        imageAddr: imageAddr ?? this.imageAddr,
-        imageVmAddr: imageVmAddr ?? this.imageVmAddr,
-        imageSize: imageSize ?? this.imageSize,
-        arch: arch ?? this.arch,
-        codeId: codeId ?? this.codeId,
-        cpuType: cpuType ?? this.cpuType,
-        cpuSubtype: cpuSubtype ?? this.cpuSubtype,
-      );
+  }) => DebugImage(
+    uuid: uuid ?? this.uuid,
+    name: name ?? this.name,
+    type: type ?? this.type,
+    debugId: debugId ?? this.debugId,
+    debugFile: debugFile ?? this.debugFile,
+    codeFile: codeFile ?? this.codeFile,
+    imageAddr: imageAddr ?? this.imageAddr,
+    imageVmAddr: imageVmAddr ?? this.imageVmAddr,
+    imageSize: imageSize ?? this.imageSize,
+    arch: arch ?? this.arch,
+    codeId: codeId ?? this.codeId,
+    cpuType: cpuType ?? this.cpuType,
+    cpuSubtype: cpuSubtype ?? this.cpuSubtype,
+  );
 }

@@ -38,7 +38,7 @@ class SentryEnvelope {
       [
         SentryEnvelopeItem.fromEvent(event),
         if (attachments != null)
-          ...attachments.map((e) => SentryEnvelopeItem.fromAttachment(e))
+          ...attachments.map((e) => SentryEnvelopeItem.fromAttachment(e)),
       ],
     );
   }
@@ -50,11 +50,7 @@ class SentryEnvelope {
   }) {
     return SentryEnvelope(
       // no need for [traceContext]
-      SentryEnvelopeHeader(
-        feedback.eventId,
-        sdkVersion,
-        dsn: dsn,
-      ),
+      SentryEnvelopeHeader(feedback.eventId, sdkVersion, dsn: dsn),
       [SentryEnvelopeItem.fromUserFeedback(feedback)],
     );
   }
@@ -77,7 +73,7 @@ class SentryEnvelope {
       [
         SentryEnvelopeItem.fromTransaction(transaction),
         if (attachments != null)
-          ...attachments.map((e) => SentryEnvelopeItem.fromAttachment(e))
+          ...attachments.map((e) => SentryEnvelopeItem.fromAttachment(e)),
       ],
     );
   }

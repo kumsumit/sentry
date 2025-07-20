@@ -156,11 +156,13 @@ class SentrySpan extends ISentrySpan {
 
   Map<String, dynamic> toJson() {
     final json = _context.toJson();
-    json['start_timestamp'] =
-        formatDateAsIso8601WithMillisPrecision(_startTimestamp);
+    json['start_timestamp'] = formatDateAsIso8601WithMillisPrecision(
+      _startTimestamp,
+    );
     if (_endTimestamp != null) {
-      json['timestamp'] =
-          formatDateAsIso8601WithMillisPrecision(_endTimestamp!);
+      json['timestamp'] = formatDateAsIso8601WithMillisPrecision(
+        _endTimestamp!,
+      );
     }
     if (_data.isNotEmpty) {
       json['data'] = _data;
@@ -192,17 +194,13 @@ class SentrySpan extends ISentrySpan {
 
   @override
   SentryTraceHeader toSentryTrace() => SentryTraceHeader(
-        _context.traceId,
-        _context.spanId,
-        sampled: samplingDecision?.sampled,
-      );
+    _context.traceId,
+    _context.spanId,
+    sampled: samplingDecision?.sampled,
+  );
 
   @override
-  void setMeasurement(
-    String name,
-    num value, {
-    SentryMeasurementUnit? unit,
-  }) {
+  void setMeasurement(String name, num value, {SentryMeasurementUnit? unit}) {
     _tracer.setMeasurement(name, value, unit: unit);
   }
 

@@ -17,19 +17,13 @@ void main() {
     test('toJson', () {
       final json = sentryBrowser.toJson();
 
-      expect(
-        MapEquality().equals(sentryBrowserJson, json),
-        true,
-      );
+      expect(MapEquality().equals(sentryBrowserJson, json), true);
     });
     test('fromJson', () {
       final sentryBrowser = SentryBrowser.fromJson(sentryBrowserJson);
       final json = sentryBrowser.toJson();
 
-      expect(
-        MapEquality().equals(sentryBrowserJson, json),
-        true,
-      );
+      expect(MapEquality().equals(sentryBrowserJson, json), true);
     });
   });
 
@@ -39,19 +33,13 @@ void main() {
 
       final copy = data.copyWith();
 
-      expect(
-        MapEquality().equals(data.toJson(), copy.toJson()),
-        true,
-      );
+      expect(MapEquality().equals(data.toJson(), copy.toJson()), true);
     });
 
     test('copyWith takes new values', () {
       final data = sentryBrowser;
 
-      final copy = data.copyWith(
-        name: 'name1',
-        version: 'version1',
-      );
+      final copy = data.copyWith(name: 'name1', version: 'version1');
 
       expect('name1', copy.name);
       expect('version1', copy.version);

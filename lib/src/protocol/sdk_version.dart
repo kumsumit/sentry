@@ -40,10 +40,9 @@ class SdkVersion {
     required this.version,
     List<String>? integrations,
     List<SentryPackage>? packages,
-  })  :
-        // List.from prevents from having immutable lists
-        _integrations = List.from(integrations ?? []),
-        _packages = List.from(packages ?? []);
+  }) : // List.from prevents from having immutable lists
+       _integrations = List.from(integrations ?? []),
+       _packages = List.from(packages ?? []);
 
   /// The name of the SDK.
   final String name;
@@ -111,11 +110,10 @@ class SdkVersion {
     String? version,
     List<String>? integrations,
     List<SentryPackage>? packages,
-  }) =>
-      SdkVersion(
-        name: name ?? this.name,
-        version: version ?? this.version,
-        integrations: integrations ?? _integrations,
-        packages: packages ?? _packages,
-      );
+  }) => SdkVersion(
+    name: name ?? this.name,
+    version: version ?? this.version,
+    integrations: integrations ?? _integrations,
+    packages: packages ?? _packages,
+  );
 }

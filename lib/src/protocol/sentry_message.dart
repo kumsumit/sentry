@@ -47,10 +47,9 @@ class SentryMessage {
     String? formatted,
     String? template,
     List<dynamic>? params,
-  }) =>
-      SentryMessage(
-        formatted ?? this.formatted,
-        template: template ?? this.template,
-        params: params ?? this.params,
-      );
+  }) => SentryMessage(
+    formatted ?? this.formatted,
+    template: template ?? this.template,
+    params: params ?? this.params,
+  );
 }

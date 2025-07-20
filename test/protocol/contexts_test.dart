@@ -42,7 +42,7 @@ void main() {
       'op': 'op',
       'parent_span_id': 'c9c9fc3f9d4346df',
       'description': 'desc',
-      'status': 'ok'
+      'status': 'ok',
     },
   };
 
@@ -50,7 +50,7 @@ void main() {
     runtimes: [
       SentryRuntime(name: 'name'),
       SentryRuntime(name: 'name'),
-      SentryRuntime(key: 'key')
+      SentryRuntime(key: 'key'),
     ],
   );
 
@@ -63,10 +63,7 @@ void main() {
     test('toJson', () {
       final json = _contexts.toJson();
 
-      expect(
-        DeepCollectionEquality().equals(_contextsJson, json),
-        true,
-      );
+      expect(DeepCollectionEquality().equals(_contextsJson, json), true);
     });
     test('toJson multiple runtimes', () {
       final json = _contextsMutlipleRuntimes.toJson();
@@ -80,14 +77,12 @@ void main() {
       final contexts = Contexts.fromJson(_contextsJson);
       final json = contexts.toJson();
 
-      expect(
-        DeepCollectionEquality().equals(_contextsJson, json),
-        true,
-      );
+      expect(DeepCollectionEquality().equals(_contextsJson, json), true);
     });
     test('fromJson multiple runtimes', () {
-      final contextsMutlipleRuntimes =
-          Contexts.fromJson(_contextsMutlipleRuntimesJson);
+      final contextsMutlipleRuntimes = Contexts.fromJson(
+        _contextsMutlipleRuntimesJson,
+      );
       final json = contextsMutlipleRuntimes.toJson();
 
       expect(
@@ -143,10 +138,7 @@ void main() {
 
       expect(device.toJson(), copy.device!.toJson());
       expect(os.toJson(), copy.operatingSystem!.toJson());
-      expect(
-        ListEquality().equals(runtimes, copy.runtimes),
-        true,
-      );
+      expect(ListEquality().equals(runtimes, copy.runtimes), true);
       expect(app.toJson(), copy.app!.toJson());
       expect(browser.toJson(), copy.browser!.toJson());
       expect(culture.toJson(), copy.culture!.toJson());

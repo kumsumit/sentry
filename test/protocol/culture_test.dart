@@ -9,10 +9,7 @@ void main() {
 
       final copy = data.copyWith();
 
-      expect(
-        MapEquality().equals(data.toJson(), copy.toJson()),
-        true,
-      );
+      expect(MapEquality().equals(data.toJson(), copy.toJson()), true);
     });
 
     test('copyWith takes new values', () {
@@ -48,9 +45,9 @@ void main() {
 }
 
 SentryCulture _generate() => SentryCulture(
-      calendar: 'FooCalendar',
-      displayName: 'FooLanguage',
-      is24HourFormat: true,
-      locale: 'fo-ba',
-      timezone: 'best-timezone',
-    );
+  calendar: 'FooCalendar',
+  displayName: 'FooLanguage',
+  is24HourFormat: true,
+  locale: 'fo-ba',
+  timezone: 'best-timezone',
+);

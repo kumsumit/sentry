@@ -50,18 +50,18 @@ class SentryApp {
 
   /// Deserializes a [SentryApp] from JSON [Map].
   factory SentryApp.fromJson(Map<String, dynamic> data) => SentryApp(
-        name: data['app_name'],
-        version: data['app_version'],
-        identifier: data['app_identifier'],
-        build: data['app_build'],
-        buildType: data['build_type'],
-        startTime: data['app_start_time'] != null
-            ? DateTime.tryParse(data['app_start_time'])
-            : null,
-        deviceAppHash: data['device_app_hash'],
-        appMemory: data['app_memory'],
-        inForeground: data['in_foreground'],
-      );
+    name: data['app_name'],
+    version: data['app_version'],
+    identifier: data['app_identifier'],
+    build: data['app_build'],
+    buildType: data['build_type'],
+    startTime: data['app_start_time'] != null
+        ? DateTime.tryParse(data['app_start_time'])
+        : null,
+    deviceAppHash: data['device_app_hash'],
+    appMemory: data['app_memory'],
+    inForeground: data['in_foreground'],
+  );
 
   /// Produces a [Map] that can be serialized to JSON.
   Map<String, dynamic> toJson() {
@@ -79,16 +79,16 @@ class SentryApp {
   }
 
   SentryApp clone() => SentryApp(
-        name: name,
-        version: version,
-        identifier: identifier,
-        build: build,
-        buildType: buildType,
-        startTime: startTime,
-        deviceAppHash: deviceAppHash,
-        appMemory: appMemory,
-        inForeground: inForeground,
-      );
+    name: name,
+    version: version,
+    identifier: identifier,
+    build: build,
+    buildType: buildType,
+    startTime: startTime,
+    deviceAppHash: deviceAppHash,
+    appMemory: appMemory,
+    inForeground: inForeground,
+  );
 
   SentryApp copyWith({
     String? name,
@@ -100,16 +100,15 @@ class SentryApp {
     String? deviceAppHash,
     int? appMemory,
     bool? inForeground,
-  }) =>
-      SentryApp(
-        name: name ?? this.name,
-        version: version ?? this.version,
-        identifier: identifier ?? this.identifier,
-        build: build ?? this.build,
-        buildType: buildType ?? this.buildType,
-        startTime: startTime ?? this.startTime,
-        deviceAppHash: deviceAppHash ?? this.deviceAppHash,
-        appMemory: appMemory ?? this.appMemory,
-        inForeground: inForeground ?? this.inForeground,
-      );
+  }) => SentryApp(
+    name: name ?? this.name,
+    version: version ?? this.version,
+    identifier: identifier ?? this.identifier,
+    build: build ?? this.build,
+    buildType: buildType ?? this.buildType,
+    startTime: startTime ?? this.startTime,
+    deviceAppHash: deviceAppHash ?? this.deviceAppHash,
+    appMemory: appMemory ?? this.appMemory,
+    inForeground: inForeground ?? this.inForeground,
+  );
 }

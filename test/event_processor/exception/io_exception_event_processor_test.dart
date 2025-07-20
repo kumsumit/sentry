@@ -1,5 +1,4 @@
 @TestOn('vm')
-
 import 'dart:io';
 
 import 'package:sentry/sentry.dart';
@@ -32,11 +31,7 @@ void main() {
 
     test('no $SentryRequest for $HttpException without uris', () {
       final enricher = fixture.getSut();
-      final event = enricher.apply(
-        SentryEvent(
-          throwable: HttpException(''),
-        ),
-      );
+      final event = enricher.apply(SentryEvent(throwable: HttpException('')));
 
       expect(event?.request, isNull);
     });
@@ -86,10 +81,7 @@ void main() {
       // Due to the test setup, there's no SentryException for the FileSystemException.
       // And thus only one entry for the added OSError
       expect(event?.exceptions?.first.type, 'OSError');
-      expect(
-        event?.exceptions?.first.value,
-        'OS Error: Oh no :(, errno = 42',
-      );
+      expect(event?.exceptions?.first.value, 'OS Error: Oh no :(, errno = 42');
       expect(event?.exceptions?.first.mechanism?.type, 'OSError');
       expect(event?.exceptions?.first.mechanism?.meta['errno']['number'], 42);
     });

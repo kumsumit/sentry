@@ -12,8 +12,8 @@ import '../utils/http_sanitizer.dart';
 /// https://develop.sentry.dev/sdk/performance
 class TracingClient extends BaseClient {
   TracingClient({Client? client, Hub? hub})
-      : _hub = hub ?? HubAdapter(),
-        _client = client ?? Client();
+    : _hub = hub ?? HubAdapter(),
+      _client = client ?? Client();
 
   final Client _client;
   final Hub _hub;
@@ -30,10 +30,7 @@ class TracingClient extends BaseClient {
     }
 
     final currentSpan = _hub.getSpan();
-    var span = currentSpan?.startChild(
-      'http.client',
-      description: description,
-    );
+    var span = currentSpan?.startChild('http.client', description: description);
     span?.origin = SentryTraceOrigins.autoHttpHttp;
 
     // if the span is NoOp, we don't want to attach headers
@@ -47,7 +44,9 @@ class TracingClient extends BaseClient {
     StreamedResponse? response;
     try {
       if (containsTargetOrMatchesRegExp(
-          _hub.options.tracePropagationTargets, request.url.toString())) {
+        _hub.options.tracePropagationTargets,
+        request.url.toString(),
+      )) {
         if (span != null) {
           addSentryTraceHeaderFromSpan(span, request.headers);
           addBaggageHeaderFromSpan(
@@ -65,8 +64,11 @@ class TracingClient extends BaseClient {
           final baggage = propagationContext.baggage;
           if (baggage != null) {
             final baggageHeader = SentryBaggageHeader.fromBaggage(baggage);
-            addBaggageHeader(baggageHeader, request.headers,
-                logger: _hub.options.logger);
+            addBaggageHeader(
+              baggageHeader,
+              request.headers,
+              logger: _hub.options.logger,
+            );
           }
         }
       }

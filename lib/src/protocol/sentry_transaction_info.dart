@@ -4,22 +4,14 @@ class SentryTransactionInfo {
   final String source;
 
   Map<String, dynamic> toJson() {
-    return {
-      'source': source,
-    };
+    return {'source': source};
   }
 
-  SentryTransactionInfo copyWith({
-    String? source,
-  }) {
-    return SentryTransactionInfo(
-      source ?? this.source,
-    );
+  SentryTransactionInfo copyWith({String? source}) {
+    return SentryTransactionInfo(source ?? this.source);
   }
 
   factory SentryTransactionInfo.fromJson(Map<String, dynamic> json) {
-    return SentryTransactionInfo(
-      json['source'],
-    );
+    return SentryTransactionInfo(json['source']);
   }
 }

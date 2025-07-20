@@ -23,8 +23,7 @@ class NoOpSentryClient implements SentryClient {
     dynamic stackTrace,
     Scope? scope,
     Hint? hint,
-  }) async =>
-      SentryId.empty();
+  }) async => SentryId.empty();
 
   @override
   Future<SentryId> captureException(
@@ -32,8 +31,7 @@ class NoOpSentryClient implements SentryClient {
     dynamic stackTrace,
     Scope? scope,
     Hint? hint,
-  }) async =>
-      SentryId.empty();
+  }) async => SentryId.empty();
 
   @override
   Future<SentryId> captureMessage(
@@ -43,8 +41,7 @@ class NoOpSentryClient implements SentryClient {
     List<dynamic>? params,
     Scope? scope,
     Hint? hint,
-  }) async =>
-      SentryId.empty();
+  }) async => SentryId.empty();
 
   @override
   Future<SentryId> captureEnvelope(SentryEnvelope envelope) async =>
@@ -61,6 +58,5 @@ class NoOpSentryClient implements SentryClient {
     SentryTransaction transaction, {
     Scope? scope,
     SentryTraceContextHeader? traceContext,
-  }) async =>
-      SentryId.empty();
+  }) async => SentryId.empty();
 }

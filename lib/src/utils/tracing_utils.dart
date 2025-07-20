@@ -1,13 +1,17 @@
 import '../../sentry.dart';
 
 void addSentryTraceHeaderFromSpan(
-    ISentrySpan span, Map<String, dynamic> headers) {
+  ISentrySpan span,
+  Map<String, dynamic> headers,
+) {
   final traceHeader = span.toSentryTrace();
   headers[traceHeader.name] = traceHeader.value;
 }
 
 void addSentryTraceHeader(
-    SentryTraceHeader traceHeader, Map<String, dynamic> headers) {
+  SentryTraceHeader traceHeader,
+  Map<String, dynamic> headers,
+) {
   headers[traceHeader.name] = traceHeader.value;
 }
 
@@ -29,14 +33,8 @@ void addBaggageHeader(
 }) {
   final currentValue = headers[baggage.name] as String? ?? '';
 
-  final currentBaggage = SentryBaggage.fromHeader(
-    currentValue,
-    logger: logger,
-  );
-  final sentryBaggage = SentryBaggage.fromHeader(
-    baggage.value,
-    logger: logger,
-  );
+  final currentBaggage = SentryBaggage.fromHeader(currentValue, logger: logger);
+  final sentryBaggage = SentryBaggage.fromHeader(baggage.value, logger: logger);
 
   // overwrite sentry's keys https://develop.sentry.dev/sdk/performance/dynamic-sampling-context/#baggage
   final filteredBaggageHeader = Map.from(currentBaggage.keyValues);
@@ -53,7 +51,9 @@ void addBaggageHeader(
 }
 
 bool containsTargetOrMatchesRegExp(
-    List<String> tracePropagationTargets, String url) {
+  List<String> tracePropagationTargets,
+  String url,
+) {
   if (tracePropagationTargets.isEmpty) {
     return false;
   }

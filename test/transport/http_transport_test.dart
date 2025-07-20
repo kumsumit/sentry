@@ -18,10 +18,13 @@ import '../mocks/mock_client_report_recorder.dart';
 void main() {
   SentryEnvelope givenEnvelope() {
     final filteredEnvelopeHeader = SentryEnvelopeHeader(SentryId.empty(), null);
-    final filteredItemHeader =
-        SentryEnvelopeItemHeader(SentryItemType.event, () async {
-      return 2;
-    }, contentType: 'application/json');
+    final filteredItemHeader = SentryEnvelopeItemHeader(
+      SentryItemType.event,
+      () async {
+        return 2;
+      },
+      contentType: 'application/json',
+    );
     final dataFactory = () async {
       return utf8.encode('{}');
     };
@@ -128,8 +131,10 @@ void main() {
       );
       await sut.send(envelope);
 
-      expect(mockRateLimiter.envelopeToFilter?.header.eventId,
-          sentryEvent.eventId);
+      expect(
+        mockRateLimiter.envelopeToFilter?.header.eventId,
+        sentryEvent.eventId,
+      );
 
       expect(mockRateLimiter.errorCode, 429);
       expect(mockRateLimiter.retryAfterHeader, '1');
@@ -138,8 +143,11 @@ void main() {
 
     test('sentryRateLimitHeader', () async {
       final httpMock = MockClient((http.Request request) async {
-        return http.Response('{}', 200,
-            headers: {'X-Sentry-Rate-Limits': 'fixture-sentryRateLimitHeader'});
+        return http.Response(
+          '{}',
+          200,
+          headers: {'X-Sentry-Rate-Limits': 'fixture-sentryRateLimitHeader'},
+        );
       });
       final mockRateLimiter = MockRateLimiter();
       final sut = fixture.getSut(httpMock, mockRateLimiter);
@@ -154,8 +162,10 @@ void main() {
 
       expect(mockRateLimiter.errorCode, 200);
       expect(mockRateLimiter.retryAfterHeader, isNull);
-      expect(mockRateLimiter.sentryRateLimitHeader,
-          'fixture-sentryRateLimitHeader');
+      expect(
+        mockRateLimiter.sentryRateLimitHeader,
+        'fixture-sentryRateLimitHeader',
+      );
     });
   });
 

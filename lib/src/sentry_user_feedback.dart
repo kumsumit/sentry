@@ -6,10 +6,12 @@ class SentryUserFeedback {
     this.name,
     this.email,
     this.comments,
-  }) : assert(eventId != SentryId.empty() &&
-            (name?.isNotEmpty == true ||
-                email?.isNotEmpty == true ||
-                comments?.isNotEmpty == true));
+  }) : assert(
+         eventId != SentryId.empty() &&
+             (name?.isNotEmpty == true ||
+                 email?.isNotEmpty == true ||
+                 comments?.isNotEmpty == true),
+       );
 
   factory SentryUserFeedback.fromJson(Map<String, dynamic> json) {
     return SentryUserFeedback(

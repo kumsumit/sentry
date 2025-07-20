@@ -25,8 +25,10 @@ class DebugMeta {
     return DebugMeta(
       sdk: sdkInfoJson != null ? SdkInfo.fromJson(sdkInfoJson) : null,
       images: debugImagesJson
-          ?.map((debugImageJson) =>
-              DebugImage.fromJson(debugImageJson as Map<String, dynamic>))
+          ?.map(
+            (debugImageJson) =>
+                DebugImage.fromJson(debugImageJson as Map<String, dynamic>),
+          )
           .toList(),
     );
   }
@@ -40,16 +42,10 @@ class DebugMeta {
         'images': _images!
             .map((e) => e.toJson())
             .where((element) => element.isNotEmpty)
-            .toList(growable: false)
+            .toList(growable: false),
     };
   }
 
-  DebugMeta copyWith({
-    SdkInfo? sdk,
-    List<DebugImage>? images,
-  }) =>
-      DebugMeta(
-        sdk: sdk ?? this.sdk,
-        images: images ?? _images,
-      );
+  DebugMeta copyWith({SdkInfo? sdk, List<DebugImage>? images}) =>
+      DebugMeta(sdk: sdk ?? this.sdk, images: images ?? _images);
 }

@@ -25,19 +25,13 @@ void main() {
     test('toJson', () {
       final json = sentryUser.toJson();
 
-      expect(
-        DeepCollectionEquality().equals(sentryUserJson, json),
-        true,
-      );
+      expect(DeepCollectionEquality().equals(sentryUserJson, json), true);
     });
     test('fromJson', () {
       final sentryUser = SentryUser.fromJson(sentryUserJson);
       final json = sentryUser.toJson();
 
-      expect(
-        DeepCollectionEquality().equals(sentryUserJson, json),
-        true,
-      );
+      expect(DeepCollectionEquality().equals(sentryUserJson, json), true);
     });
 
     test('toJson only serialises non-null values', () {

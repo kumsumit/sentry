@@ -39,13 +39,12 @@ class HubAdapter implements Hub {
     dynamic stackTrace,
     Hint? hint,
     ScopeCallback? withScope,
-  }) =>
-      Sentry.captureEvent(
-        event,
-        stackTrace: stackTrace,
-        hint: hint,
-        withScope: withScope,
-      );
+  }) => Sentry.captureEvent(
+    event,
+    stackTrace: stackTrace,
+    hint: hint,
+    withScope: withScope,
+  );
 
   @override
   Future<SentryId> captureException(
@@ -53,13 +52,12 @@ class HubAdapter implements Hub {
     dynamic stackTrace,
     Hint? hint,
     ScopeCallback? withScope,
-  }) =>
-      Sentry.captureException(
-        throwable,
-        stackTrace: stackTrace,
-        hint: hint,
-        withScope: withScope,
-      );
+  }) => Sentry.captureException(
+    throwable,
+    stackTrace: stackTrace,
+    hint: hint,
+    withScope: withScope,
+  );
 
   @override
   Future<SentryId> captureMessage(
@@ -69,15 +67,14 @@ class HubAdapter implements Hub {
     List? params,
     Hint? hint,
     ScopeCallback? withScope,
-  }) =>
-      Sentry.captureMessage(
-        message,
-        level: level,
-        template: template,
-        params: params,
-        hint: hint,
-        withScope: withScope,
-      );
+  }) => Sentry.captureMessage(
+    message,
+    level: level,
+    template: template,
+    params: params,
+    hint: hint,
+    withScope: withScope,
+  );
 
   @override
   Hub clone() => Sentry.clone();
@@ -99,11 +96,10 @@ class HubAdapter implements Hub {
   Future<SentryId> captureTransaction(
     SentryTransaction transaction, {
     SentryTraceContextHeader? traceContext,
-  }) =>
-      Sentry.currentHub.captureTransaction(
-        transaction,
-        traceContext: traceContext,
-      );
+  }) => Sentry.currentHub.captureTransaction(
+    transaction,
+    traceContext: traceContext,
+  );
 
   @override
   ISentrySpan? getSpan() => Sentry.currentHub.getSpan();
@@ -122,17 +118,16 @@ class HubAdapter implements Hub {
     Duration? autoFinishAfter,
     bool? trimEnd,
     OnTransactionFinish? onFinish,
-  }) =>
-      Sentry.startTransactionWithContext(
-        transactionContext,
-        customSamplingContext: customSamplingContext,
-        startTimestamp: startTimestamp,
-        bindToScope: bindToScope,
-        waitForChildren: waitForChildren,
-        autoFinishAfter: autoFinishAfter,
-        trimEnd: trimEnd,
-        onFinish: onFinish,
-      );
+  }) => Sentry.startTransactionWithContext(
+    transactionContext,
+    customSamplingContext: customSamplingContext,
+    startTimestamp: startTimestamp,
+    bindToScope: bindToScope,
+    waitForChildren: waitForChildren,
+    autoFinishAfter: autoFinishAfter,
+    trimEnd: trimEnd,
+    onFinish: onFinish,
+  );
 
   @override
   ISentrySpan startTransaction(
@@ -146,27 +141,25 @@ class HubAdapter implements Hub {
     bool? trimEnd,
     OnTransactionFinish? onFinish,
     Map<String, dynamic>? customSamplingContext,
-  }) =>
-      Sentry.startTransaction(
-        name,
-        operation,
-        description: description,
-        startTimestamp: startTimestamp,
-        bindToScope: bindToScope,
-        waitForChildren: waitForChildren,
-        autoFinishAfter: autoFinishAfter,
-        trimEnd: trimEnd,
-        onFinish: onFinish,
-        customSamplingContext: customSamplingContext,
-      );
+  }) => Sentry.startTransaction(
+    name,
+    operation,
+    description: description,
+    startTimestamp: startTimestamp,
+    bindToScope: bindToScope,
+    waitForChildren: waitForChildren,
+    autoFinishAfter: autoFinishAfter,
+    trimEnd: trimEnd,
+    onFinish: onFinish,
+    customSamplingContext: customSamplingContext,
+  );
 
   @override
   void setSpanContext(
     dynamic throwable,
     ISentrySpan span,
     String transaction,
-  ) =>
-      Sentry.currentHub.setSpanContext(throwable, span, transaction);
+  ) => Sentry.currentHub.setSpanContext(throwable, span, transaction);
 
   @override
   Scope get scope => Sentry.currentHub.scope;

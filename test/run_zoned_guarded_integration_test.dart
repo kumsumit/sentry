@@ -1,5 +1,4 @@
 @TestOn('vm')
-
 import 'package:sentry/sentry.dart';
 import 'package:test/test.dart';
 
@@ -61,9 +60,10 @@ class Fixture {
   final hub = MockHub();
   final options = SentryOptions(dsn: fakeDsn)..tracesSampleRate = 1.0;
 
-  RunZonedGuardedIntegration getSut(
-      {required RunZonedGuardedRunner runner,
-      RunZonedGuardedOnError? onError}) {
+  RunZonedGuardedIntegration getSut({
+    required RunZonedGuardedRunner runner,
+    RunZonedGuardedOnError? onError,
+  }) {
     return RunZonedGuardedIntegration(runner, onError);
   }
 }

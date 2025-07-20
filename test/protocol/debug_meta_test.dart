@@ -4,36 +4,28 @@ import 'package:test/test.dart';
 
 void main() {
   final debugMeta = DebugMeta(
-    sdk: SdkInfo(
-      sdkName: 'sdkName',
-    ),
+    sdk: SdkInfo(sdkName: 'sdkName'),
     images: [DebugImage(type: 'macho', uuid: 'uuid')],
   );
 
   final debugMetaJson = <String, dynamic>{
     'sdk_info': {'sdk_name': 'sdkName'},
     'images': [
-      {'uuid': 'uuid', 'type': 'macho'}
-    ]
+      {'uuid': 'uuid', 'type': 'macho'},
+    ],
   };
 
   group('json', () {
     test('toJson', () {
       final json = debugMeta.toJson();
 
-      expect(
-        DeepCollectionEquality().equals(debugMetaJson, json),
-        true,
-      );
+      expect(DeepCollectionEquality().equals(debugMetaJson, json), true);
     });
     test('fromJson', () {
       final debugMeta = DebugMeta.fromJson(debugMetaJson);
       final json = debugMeta.toJson();
 
-      expect(
-        DeepCollectionEquality().equals(debugMetaJson, json),
-        true,
-      );
+      expect(DeepCollectionEquality().equals(debugMetaJson, json), true);
     });
   });
 
@@ -49,20 +41,12 @@ void main() {
     test('copyWith takes new values', () {
       final data = debugMeta;
 
-      final newSdkInfo = SdkInfo(
-        sdkName: 'sdkName1',
-      );
+      final newSdkInfo = SdkInfo(sdkName: 'sdkName1');
       final newImageList = [DebugImage(type: 'macho', uuid: 'uuid1')];
 
-      final copy = data.copyWith(
-        sdk: newSdkInfo,
-        images: newImageList,
-      );
+      final copy = data.copyWith(sdk: newSdkInfo, images: newImageList);
 
-      expect(
-        ListEquality().equals(newImageList, copy.images),
-        true,
-      );
+      expect(ListEquality().equals(newImageList, copy.images), true);
       expect(
         MapEquality().equals(newSdkInfo.toJson(), copy.sdk!.toJson()),
         true,

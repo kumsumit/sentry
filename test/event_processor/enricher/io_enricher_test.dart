@@ -1,4 +1,5 @@
 @TestOn('vm')
+library;
 
 import 'package:sentry/sentry.dart';
 import 'package:sentry/src/event_processor/enricher/io_enricher_event_processor.dart';
@@ -20,8 +21,9 @@ void main() {
       final event = enricher.apply(SentryEvent());
 
       expect(event?.contexts.runtimes, isNotEmpty);
-      final dartRuntime = event?.contexts.runtimes
-          .firstWhere((element) => element.name == 'Dart');
+      final dartRuntime = event?.contexts.runtimes.firstWhere(
+        (element) => element.name == 'Dart',
+      );
       expect(dartRuntime?.name, 'Dart');
       expect(dartRuntime?.rawDescription, isNotNull);
     });
@@ -39,25 +41,28 @@ void main() {
     });
 
     test(
-        'does not add device, os and culture if native integration is available',
-        () {
-      final enricher = fixture.getSut(hasNativeIntegration: true);
-      final event = enricher.apply(SentryEvent());
+      'does not add device, os and culture if native integration is available',
+      () {
+        final enricher = fixture.getSut(hasNativeIntegration: true);
+        final event = enricher.apply(SentryEvent());
 
-      expect(event?.contexts.device, isNull);
-      expect(event?.contexts.operatingSystem, isNull);
-      expect(event?.contexts.culture, isNull);
-    });
+        expect(event?.contexts.device, isNull);
+        expect(event?.contexts.operatingSystem, isNull);
+        expect(event?.contexts.culture, isNull);
+      },
+    );
 
-    test('adds device, os and culture if no native integration is available',
-        () {
-      final enricher = fixture.getSut(hasNativeIntegration: false);
-      final event = enricher.apply(SentryEvent());
+    test(
+      'adds device, os and culture if no native integration is available',
+      () {
+        final enricher = fixture.getSut(hasNativeIntegration: false);
+        final event = enricher.apply(SentryEvent());
 
-      expect(event?.contexts.device, isNotNull);
-      expect(event?.contexts.operatingSystem, isNotNull);
-      expect(event?.contexts.culture, isNotNull);
-    });
+        expect(event?.contexts.device, isNotNull);
+        expect(event?.contexts.operatingSystem, isNotNull);
+        expect(event?.contexts.culture, isNotNull);
+      },
+    );
 
     test('device has name', () {
       final enricher = fixture.getSut();
@@ -112,17 +117,12 @@ void main() {
     test('does not override event', () {
       final fakeEvent = SentryEvent(
         contexts: Contexts(
-          device: SentryDevice(
-            name: 'device_name',
-          ),
+          device: SentryDevice(name: 'device_name'),
           operatingSystem: SentryOperatingSystem(
             name: 'sentry_os',
             version: 'best version',
           ),
-          culture: SentryCulture(
-            locale: 'de',
-            timezone: 'timezone',
-          ),
+          culture: SentryCulture(locale: 'de', timezone: 'timezone'),
         ),
       );
 
@@ -134,10 +134,7 @@ void main() {
       final event = enricher.apply(fakeEvent);
 
       // contexts.device
-      expect(
-        event?.contexts.device?.name,
-        fakeEvent.contexts.device?.name,
-      );
+      expect(event?.contexts.device?.name, fakeEvent.contexts.device?.name);
       // contexts.culture
       expect(
         event?.contexts.culture?.locale,
@@ -161,13 +158,10 @@ void main() {
     test('$IoEnricherEventProcessor gets added on init', () async {
       final options = SentryOptions(dsn: fakeDsn)..devMode = true;
       late SentryOptions configuredOptions;
-      await Sentry.init(
-        (options) {
-          options.dsn = fakeDsn;
-          configuredOptions = options;
-        },
-        options: options,
-      );
+      await Sentry.init((options) {
+        options.dsn = fakeDsn;
+        configuredOptions = options;
+      }, options: options);
       await Sentry.close();
 
       final ioEnricherCount = configuredOptions.eventProcessors
@@ -184,10 +178,9 @@ class Fixture {
     bool includePii = false,
   }) {
     final options = SentryOptions(
-        dsn: fakeDsn,
-        checker:
-            MockPlatformChecker(hasNativeIntegration: hasNativeIntegration))
-      ..sendDefaultPii = includePii;
+      dsn: fakeDsn,
+      checker: MockPlatformChecker(hasNativeIntegration: hasNativeIntegration),
+    )..sendDefaultPii = includePii;
 
     return IoEnricherEventProcessor(options);
   }

@@ -8,10 +8,7 @@ void main() {
 
     final copy = data.copyWith();
 
-    expect(
-      MapEquality().equals(data.toJson(), copy.toJson()),
-      true,
-    );
+    expect(MapEquality().equals(data.toJson(), copy.toJson()), true);
   });
 
   test('copyWith takes new values', () {
@@ -76,29 +73,29 @@ void main() {
 }
 
 SentryDevice _generate({DateTime? testBootTime}) => SentryDevice(
-      name: 'name',
-      family: 'family',
-      model: 'model',
-      modelId: 'modelId',
-      arch: 'arch',
-      batteryLevel: 1,
-      orientation: SentryOrientation.landscape,
-      manufacturer: 'manufacturer',
-      brand: 'brand',
-      screenHeightPixels: 600,
-      screenWidthPixels: 800,
-      screenDensity: 99.1,
-      screenDpi: 100,
-      online: false,
-      charging: true,
-      lowMemory: false,
-      simulator: true,
-      memorySize: 1234567,
-      freeMemory: 12345,
-      usableMemory: 9876,
-      storageSize: 1234567,
-      freeStorage: 1234567,
-      externalStorageSize: 98765,
-      externalFreeStorage: 98765,
-      bootTime: testBootTime ?? DateTime.now(),
-    );
+  name: 'name',
+  family: 'family',
+  model: 'model',
+  modelId: 'modelId',
+  arch: 'arch',
+  batteryLevel: 1,
+  orientation: SentryOrientation.landscape,
+  manufacturer: 'manufacturer',
+  brand: 'brand',
+  screenHeightPixels: 600,
+  screenWidthPixels: 800,
+  screenDensity: 99.1,
+  screenDpi: 100,
+  online: false,
+  charging: true,
+  lowMemory: false,
+  simulator: true,
+  memorySize: 1234567,
+  freeMemory: 12345,
+  usableMemory: 9876,
+  storageSize: 1234567,
+  freeStorage: 1234567,
+  externalStorageSize: 98765,
+  externalFreeStorage: 98765,
+  bootTime: testBootTime ?? DateTime.now(),
+);

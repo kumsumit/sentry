@@ -14,10 +14,7 @@ class SentryExceptionFactory {
 
   SentryExceptionFactory(this._options);
 
-  SentryException getSentryException(
-    dynamic exception, {
-    dynamic stackTrace,
-  }) {
+  SentryException getSentryException(dynamic exception, {dynamic stackTrace}) {
     var throwable = exception;
     Mechanism? mechanism;
     bool? snapshot;
@@ -50,10 +47,7 @@ class SentryExceptionFactory {
       final frames = _stacktraceFactory.getStackFrames(stackTrace);
 
       if (frames.isNotEmpty) {
-        sentryStackTrace = SentryStackTrace(
-          frames: frames,
-          snapshot: snapshot,
-        );
+        sentryStackTrace = SentryStackTrace(frames: frames, snapshot: snapshot);
       }
     }
 

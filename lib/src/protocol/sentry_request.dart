@@ -81,15 +81,16 @@ class SentryRequest {
     Map<String, String>? env,
     @Deprecated('Will be removed in v8. Use [data] instead')
     Map<String, String>? other,
-  })  : _data = data,
-        _headers = headers != null ? Map.from(headers) : null,
-        // Look for a 'Set-Cookie' header (case insensitive) if not given.
-        cookies = cookies ??
-            headers?.entries
-                .firstWhereOrNull((e) => e.key.toLowerCase() == 'cookie')
-                ?.value,
-        _env = env != null ? Map.from(env) : null,
-        _other = other != null ? Map.from(other) : null;
+  }) : _data = data,
+       _headers = headers != null ? Map.from(headers) : null,
+       // Look for a 'Set-Cookie' header (case insensitive) if not given.
+       cookies =
+           cookies ??
+           headers?.entries
+               .firstWhereOrNull((e) => e.key.toLowerCase() == 'cookie')
+               ?.value,
+       _env = env != null ? Map.from(env) : null,
+       _other = other != null ? Map.from(other) : null;
 
   factory SentryRequest.fromUri({
     required Uri uri,
@@ -164,18 +165,17 @@ class SentryRequest {
     String? apiTarget,
     @Deprecated('Will be removed in v8. Use [data] instead')
     Map<String, String>? other,
-  }) =>
-      SentryRequest(
-        url: url ?? this.url,
-        method: method ?? this.method,
-        queryString: queryString ?? this.queryString,
-        cookies: removeCookies ? null : cookies ?? this.cookies,
-        data: data ?? _data,
-        headers: headers ?? _headers,
-        env: env ?? _env,
-        fragment: fragment ?? this.fragment,
-        apiTarget: apiTarget ?? this.apiTarget,
-        // ignore: deprecated_member_use_from_same_package
-        other: other ?? _other,
-      );
+  }) => SentryRequest(
+    url: url ?? this.url,
+    method: method ?? this.method,
+    queryString: queryString ?? this.queryString,
+    cookies: removeCookies ? null : cookies ?? this.cookies,
+    data: data ?? _data,
+    headers: headers ?? _headers,
+    env: env ?? _env,
+    fragment: fragment ?? this.fragment,
+    apiTarget: apiTarget ?? this.apiTarget,
+    // ignore: deprecated_member_use_from_same_package
+    other: other ?? _other,
+  );
 }

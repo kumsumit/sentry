@@ -30,8 +30,8 @@ class Breadcrumb {
     this.data,
     SentryLevel? level,
     this.type,
-  })  : timestamp = timestamp ?? getUtcDateTime(),
-        level = level ?? SentryLevel.info;
+  }) : timestamp = timestamp ?? getUtcDateTime(),
+       level = level ?? SentryLevel.info;
 
   factory Breadcrumb.http({
     required Uri url,
@@ -196,13 +196,12 @@ class Breadcrumb {
     SentryLevel? level,
     String? type,
     DateTime? timestamp,
-  }) =>
-      Breadcrumb(
-        message: message ?? this.message,
-        category: category ?? this.category,
-        data: data ?? this.data,
-        level: level ?? this.level,
-        type: type ?? this.type,
-        timestamp: timestamp ?? this.timestamp,
-      );
+  }) => Breadcrumb(
+    message: message ?? this.message,
+    category: category ?? this.category,
+    data: data ?? this.data,
+    level: level ?? this.level,
+    type: type ?? this.type,
+    timestamp: timestamp ?? this.timestamp,
+  );
 }

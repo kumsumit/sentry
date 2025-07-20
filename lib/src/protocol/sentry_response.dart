@@ -49,13 +49,14 @@ class SentryResponse {
     Map<String, String>? headers,
     String? cookies,
     Object? data,
-  })  : _data = data,
-        _headers = headers != null ? Map.from(headers) : null,
-        // Look for a 'Set-Cookie' header (case insensitive) if not given.
-        cookies = cookies ??
-            headers?.entries
-                .firstWhereOrNull((e) => e.key.toLowerCase() == 'set-cookie')
-                ?.value;
+  }) : _data = data,
+       _headers = headers != null ? Map.from(headers) : null,
+       // Look for a 'Set-Cookie' header (case insensitive) if not given.
+       cookies =
+           cookies ??
+           headers?.entries
+               .firstWhereOrNull((e) => e.key.toLowerCase() == 'set-cookie')
+               ?.value;
 
   /// Deserializes a [SentryResponse] from JSON [Map].
   factory SentryResponse.fromJson(Map<String, dynamic> json) {
@@ -85,20 +86,19 @@ class SentryResponse {
     Map<String, String>? headers,
     String? cookies,
     Object? data,
-  }) =>
-      SentryResponse(
-        headers: headers ?? _headers,
-        cookies: cookies ?? this.cookies,
-        bodySize: bodySize ?? this.bodySize,
-        statusCode: statusCode ?? this.statusCode,
-        data: data ?? this.data,
-      );
+  }) => SentryResponse(
+    headers: headers ?? _headers,
+    cookies: cookies ?? this.cookies,
+    bodySize: bodySize ?? this.bodySize,
+    statusCode: statusCode ?? this.statusCode,
+    data: data ?? this.data,
+  );
 
   SentryResponse clone() => SentryResponse(
-        bodySize: bodySize,
-        headers: headers,
-        cookies: cookies,
-        statusCode: statusCode,
-        data: data,
-      );
+    bodySize: bodySize,
+    headers: headers,
+    cookies: cookies,
+    statusCode: statusCode,
+    data: data,
+  );
 }

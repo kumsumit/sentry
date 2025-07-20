@@ -67,8 +67,12 @@ class Sentry {
       throw ArgumentError('DSN is required.');
     }
 
-    await _init(sentryOptions, appRunner, callAppRunnerInRunZonedGuarded,
-        runZonedGuardedOnError);
+    await _init(
+      sentryOptions,
+      appRunner,
+      callAppRunnerInRunZonedGuarded,
+      runZonedGuardedOnError,
+    );
   }
 
   static Future<void> _initDefaultValues(SentryOptions options) async {
@@ -130,14 +134,17 @@ class Sentry {
     if (appRunner != null) {
       if (callAppRunnerInRunZonedGuarded) {
         var runIntegrationsAndAppRunner = () async {
-          final integrations = options.integrations
-              .where((i) => i is! RunZonedGuardedIntegration);
+          final integrations = options.integrations.where(
+            (i) => i is! RunZonedGuardedIntegration,
+          );
           await _callIntegrations(integrations, options);
           await appRunner();
         };
 
         final runZonedGuardedIntegration = RunZonedGuardedIntegration(
-            runIntegrationsAndAppRunner, runZonedGuardedOnError);
+          runIntegrationsAndAppRunner,
+          runZonedGuardedOnError,
+        );
         options.addIntegrationByIndex(0, runZonedGuardedIntegration);
 
         // RunZonedGuardedIntegration will run other integrations and appRunner
@@ -154,7 +161,9 @@ class Sentry {
   }
 
   static Future<void> _callIntegrations(
-      Iterable<Integration> integrations, SentryOptions options) async {
+    Iterable<Integration> integrations,
+    SentryOptions options,
+  ) async {
     for (final integration in integrations) {
       final execute = integration(HubAdapter(), options);
       if (execute is Future) {
@@ -169,13 +178,12 @@ class Sentry {
     dynamic stackTrace,
     Hint? hint,
     ScopeCallback? withScope,
-  }) =>
-      _hub.captureEvent(
-        event,
-        stackTrace: stackTrace,
-        hint: hint,
-        withScope: withScope,
-      );
+  }) => _hub.captureEvent(
+    event,
+    stackTrace: stackTrace,
+    hint: hint,
+    withScope: withScope,
+  );
 
   /// Reports the [throwable] and optionally its [stackTrace] to Sentry.io.
   static Future<SentryId> captureException(
@@ -183,13 +191,12 @@ class Sentry {
     dynamic stackTrace,
     Hint? hint,
     ScopeCallback? withScope,
-  }) =>
-      _hub.captureException(
-        throwable,
-        stackTrace: stackTrace,
-        hint: hint,
-        withScope: withScope,
-      );
+  }) => _hub.captureException(
+    throwable,
+    stackTrace: stackTrace,
+    hint: hint,
+    withScope: withScope,
+  );
 
   /// Reports a [message] to Sentry.io.
   static Future<SentryId> captureMessage(
@@ -199,15 +206,14 @@ class Sentry {
     List<dynamic>? params,
     Hint? hint,
     ScopeCallback? withScope,
-  }) =>
-      _hub.captureMessage(
-        message,
-        level: level,
-        template: template,
-        params: params,
-        hint: hint,
-        withScope: withScope,
-      );
+  }) => _hub.captureMessage(
+    message,
+    level: level,
+    template: template,
+    params: params,
+    hint: hint,
+    withScope: withScope,
+  );
 
   /// Reports a [userFeedback] to Sentry.io.
   ///
@@ -267,19 +273,18 @@ class Sentry {
     bool? trimEnd,
     OnTransactionFinish? onFinish,
     Map<String, dynamic>? customSamplingContext,
-  }) =>
-      _hub.startTransaction(
-        name,
-        operation,
-        description: description,
-        startTimestamp: startTimestamp,
-        bindToScope: bindToScope,
-        waitForChildren: waitForChildren,
-        autoFinishAfter: autoFinishAfter,
-        trimEnd: trimEnd,
-        onFinish: onFinish,
-        customSamplingContext: customSamplingContext,
-      );
+  }) => _hub.startTransaction(
+    name,
+    operation,
+    description: description,
+    startTimestamp: startTimestamp,
+    bindToScope: bindToScope,
+    waitForChildren: waitForChildren,
+    autoFinishAfter: autoFinishAfter,
+    trimEnd: trimEnd,
+    onFinish: onFinish,
+    customSamplingContext: customSamplingContext,
+  );
 
   /// Creates a Transaction and returns the instance.
   static ISentrySpan startTransactionWithContext(
@@ -291,17 +296,16 @@ class Sentry {
     Duration? autoFinishAfter,
     bool? trimEnd,
     OnTransactionFinish? onFinish,
-  }) =>
-      _hub.startTransactionWithContext(
-        transactionContext,
-        customSamplingContext: customSamplingContext,
-        startTimestamp: startTimestamp,
-        bindToScope: bindToScope,
-        waitForChildren: waitForChildren,
-        autoFinishAfter: autoFinishAfter,
-        trimEnd: trimEnd,
-        onFinish: onFinish,
-      );
+  }) => _hub.startTransactionWithContext(
+    transactionContext,
+    customSamplingContext: customSamplingContext,
+    startTimestamp: startTimestamp,
+    bindToScope: bindToScope,
+    waitForChildren: waitForChildren,
+    autoFinishAfter: autoFinishAfter,
+    trimEnd: trimEnd,
+    onFinish: onFinish,
+  );
 
   /// Gets the current active transaction or span bound to the scope.
   static ISentrySpan? getSpan() => _hub.getSpan();

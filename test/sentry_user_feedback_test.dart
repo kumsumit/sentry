@@ -63,8 +63,10 @@ void main() {
 
     test('disallow empty id', () {
       final id = SentryId.empty();
-      expect(() => SentryUserFeedback(eventId: id),
-          throwsA(isA<AssertionError>()));
+      expect(
+        () => SentryUserFeedback(eventId: id),
+        throwsA(isA<AssertionError>()),
+      );
     });
   });
 
@@ -81,10 +83,7 @@ void main() {
       );
 
       expect(envelope.items.length, 1);
-      expect(
-        envelope.items.first.header.type,
-        SentryItemType.userFeedback,
-      );
+      expect(envelope.items.first.header.type, SentryItemType.userFeedback);
       expect(envelope.header.eventId.toString(), feedback.eventId.toString());
       expect(envelope.header.dsn, fakeDsn);
     });
@@ -93,10 +92,9 @@ void main() {
   test('sending $SentryUserFeedback', () async {
     final fixture = Fixture();
     final sut = fixture.getSut();
-    await sut.captureUserFeedback(SentryUserFeedback(
-      eventId: SentryId.newId(),
-      name: 'test',
-    ));
+    await sut.captureUserFeedback(
+      SentryUserFeedback(eventId: SentryId.newId(), name: 'test'),
+    );
 
     expect(fixture.transport.envelopes.length, 1);
   });
@@ -113,10 +111,7 @@ void main() {
     final sut = fixture.getSut();
     await sut.close();
     await sut.captureUserFeedback(
-      SentryUserFeedback(
-        eventId: SentryId.newId(),
-        name: 'test',
-      ),
+      SentryUserFeedback(eventId: SentryId.newId(), name: 'test'),
     );
 
     expect(fixture.transport.envelopes.length, 0);
@@ -127,9 +122,7 @@ void main() {
     final sut = fixture.getSut();
     await sut.close();
     await sut.captureUserFeedback(
-      SentryUserFeedbackWithoutAssert(
-        eventId: SentryId.empty(),
-      ),
+      SentryUserFeedbackWithoutAssert(eventId: SentryId.empty()),
     );
 
     expect(fixture.transport.envelopes.length, 0);

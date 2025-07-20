@@ -51,19 +51,13 @@ void main() {
     test('toJson', () {
       final json = sentryStackFrame.toJson();
 
-      expect(
-        DeepCollectionEquality().equals(sentryStackFrameJson, json),
-        true,
-      );
+      expect(DeepCollectionEquality().equals(sentryStackFrameJson, json), true);
     });
     test('fromJson', () {
       final sentryStackFrame = SentryStackFrame.fromJson(sentryStackFrameJson);
       final json = sentryStackFrame.toJson();
 
-      expect(
-        DeepCollectionEquality().equals(sentryStackFrameJson, json),
-        true,
-      );
+      expect(DeepCollectionEquality().equals(sentryStackFrameJson, json), true);
     });
   });
 

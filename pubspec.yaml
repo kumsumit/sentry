@@ -16,6 +16,7 @@ dependencies:
   meta: ^1.16.0
   stack_trace: ^1.12.1
   uuid: ^4.5.1
+  web: ^1.1.1
 
 dev_dependencies:
   mockito: ^5.4.6

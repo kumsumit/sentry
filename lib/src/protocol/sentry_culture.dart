@@ -15,12 +15,12 @@ class SentryCulture {
   });
 
   factory SentryCulture.fromJson(Map<String, dynamic> data) => SentryCulture(
-        calendar: data['calendar'],
-        displayName: data['display_name'],
-        locale: data['locale'],
-        is24HourFormat: data['is_24_hour_format'],
-        timezone: data['timezone'],
-      );
+    calendar: data['calendar'],
+    displayName: data['display_name'],
+    locale: data['locale'],
+    is24HourFormat: data['is_24_hour_format'],
+    timezone: data['timezone'],
+  );
 
   /// Optional: For example `GregorianCalendar`. Free form string.
   final String? calendar;
@@ -51,12 +51,12 @@ class SentryCulture {
   }
 
   SentryCulture clone() => SentryCulture(
-        calendar: calendar,
-        displayName: displayName,
-        locale: locale,
-        is24HourFormat: is24HourFormat,
-        timezone: timezone,
-      );
+    calendar: calendar,
+    displayName: displayName,
+    locale: locale,
+    is24HourFormat: is24HourFormat,
+    timezone: timezone,
+  );
 
   SentryCulture copyWith({
     String? calendar,
@@ -64,12 +64,11 @@ class SentryCulture {
     String? locale,
     bool? is24HourFormat,
     String? timezone,
-  }) =>
-      SentryCulture(
-        calendar: calendar ?? this.calendar,
-        displayName: displayName ?? this.displayName,
-        locale: locale ?? this.locale,
-        is24HourFormat: is24HourFormat ?? this.is24HourFormat,
-        timezone: timezone ?? this.timezone,
-      );
+  }) => SentryCulture(
+    calendar: calendar ?? this.calendar,
+    displayName: displayName ?? this.displayName,
+    locale: locale ?? this.locale,
+    is24HourFormat: is24HourFormat ?? this.is24HourFormat,
+    timezone: timezone ?? this.timezone,
+  );
 }

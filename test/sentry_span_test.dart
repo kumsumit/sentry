@@ -62,15 +62,16 @@ void main() {
   });
 
   test(
-      'finish does not set endTimestamp if given end timestamp is before start timestamp',
-      () async {
-    final sut = fixture.getSut();
+    'finish does not set endTimestamp if given end timestamp is before start timestamp',
+    () async {
+      final sut = fixture.getSut();
 
-    final invalidEndTimestamp = sut.startTimestamp.add(-Duration(hours: 1));
-    await sut.finish(endTimestamp: invalidEndTimestamp);
+      final invalidEndTimestamp = sut.startTimestamp.add(-Duration(hours: 1));
+      await sut.finish(endTimestamp: invalidEndTimestamp);
 
-    expect(sut.endTimestamp, isNot(equals(invalidEndTimestamp)));
-  });
+      expect(sut.endTimestamp, isNot(equals(invalidEndTimestamp)));
+    },
+  );
 
   test('span adds data', () {
     final sut = fixture.getSut();
@@ -159,8 +160,10 @@ void main() {
   test('toSentryTrace returns trace header', () {
     final sut = fixture.getSut();
 
-    expect(sut.toSentryTrace().value,
-        '${sut.context.traceId}-${sut.context.spanId}-1');
+    expect(
+      sut.toSentryTrace().value,
+      '${sut.context.traceId}-${sut.context.spanId}-1',
+    );
   });
 
   test('finish isnt allowed to be called twice', () async {
@@ -222,23 +225,25 @@ void main() {
   });
 
   test(
-      'startChild isnt allowed to be called if childs startTimestamp is before parents',
-      () async {
-    final parentStartTimestamp = DateTime.now();
-    final childStartTimestamp = parentStartTimestamp.add(-Duration(hours: 1));
-    final sut = fixture.getSut(startTimestamp: parentStartTimestamp);
+    'startChild isnt allowed to be called if childs startTimestamp is before parents',
+    () async {
+      final parentStartTimestamp = DateTime.now();
+      final childStartTimestamp = parentStartTimestamp.add(-Duration(hours: 1));
+      final sut = fixture.getSut(startTimestamp: parentStartTimestamp);
 
-    final span = sut.startChild('op', startTimestamp: childStartTimestamp);
+      final span = sut.startChild('op', startTimestamp: childStartTimestamp);
 
-    expect(NoOpSentrySpan(), span);
-  });
+      expect(NoOpSentrySpan(), span);
+    },
+  );
 
   test('callback called on finish', () async {
     var numberOfCallbackCalls = 0;
-    final sut =
-        fixture.getSut(finishedCallback: ({DateTime? endTimestamp}) async {
-      numberOfCallbackCalls += 1;
-    });
+    final sut = fixture.getSut(
+      finishedCallback: ({DateTime? endTimestamp}) async {
+        numberOfCallbackCalls += 1;
+      },
+    );
 
     await sut.finish();
 

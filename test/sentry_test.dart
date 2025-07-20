@@ -19,13 +19,10 @@ void main() {
 
     setUp(() async {
       final options = SentryOptions(dsn: fakeDsn)..devMode = true;
-      await Sentry.init(
-        options: options,
-        (options) {
-          options.dsn = fakeDsn;
-          options.tracesSampleRate = 1.0;
-        },
-      );
+      await Sentry.init(options: options, (options) {
+        options.dsn = fakeDsn;
+        options.tracesSampleRate = 1.0;
+      });
       anException = Exception('anException');
 
       client = MockSentryClient();
@@ -71,9 +68,12 @@ void main() {
     });
 
     test('should capture exception withScope', () async {
-      await Sentry.captureException(anException, withScope: (scope) {
-        scope.setUser(SentryUser(id: 'foo bar'));
-      });
+      await Sentry.captureException(
+        anException,
+        withScope: (scope) {
+          scope.setUser(SentryUser(id: 'foo bar'));
+        },
+      );
       expect(client.captureEventCalls.length, 1);
       expect(client.captureEventCalls.first.event.throwable, anException);
       expect(client.captureEventCalls.first.scope?.user?.id, 'foo bar');
@@ -112,7 +112,8 @@ void main() {
 
     test('should start transaction with context', () async {
       final tr = Sentry.startTransactionWithContext(
-          SentryTransactionContext('name', 'operation'));
+        SentryTransactionContext('name', 'operation'),
+      );
       await tr.finish();
 
       expect(client.captureTransactionCalls.length, 1);
@@ -151,19 +152,13 @@ void main() {
     test('appRunner should be optional', () async {
       expect(Sentry.isEnabled, false);
       final options = SentryOptions(dsn: fakeDsn)..devMode = true;
-      await Sentry.init(
-        options: options,
-        (options) => options.dsn = fakeDsn,
-      );
+      await Sentry.init(options: options, (options) => options.dsn = fakeDsn);
       expect(Sentry.isEnabled, true);
     });
 
     test('empty DSN', () async {
       final options = SentryOptions(dsn: fakeDsn)..devMode = true;
-      await Sentry.init(
-        options: options,
-        (options) => options.dsn = '',
-      );
+      await Sentry.init(options: options, (options) => options.dsn = '');
       expect(Sentry.isEnabled, false);
     });
 
@@ -171,23 +166,17 @@ void main() {
       final integration = MockIntegration();
 
       final options = SentryOptions(dsn: fakeDsn)..devMode = true;
-      await Sentry.init(
-        options: options,
-        (options) {
-          options.dsn = '';
-          options.addIntegration(integration);
-        },
-      );
+      await Sentry.init(options: options, (options) {
+        options.dsn = '';
+        options.addIntegration(integration);
+      });
 
       expect(integration.callCalls, 1);
     });
 
     test('close disables the SDK', () async {
       final options = SentryOptions(dsn: fakeDsn)..devMode = true;
-      await Sentry.init(
-        options: options,
-        (options) => options.dsn = fakeDsn,
-      );
+      await Sentry.init(options: options, (options) => options.dsn = fakeDsn);
 
       Sentry.bindClient(MockSentryClient());
 
@@ -208,13 +197,10 @@ void main() {
       final integration = MockIntegration();
 
       final options = SentryOptions(dsn: fakeDsn)..devMode = true;
-      await Sentry.init(
-        options: options,
-        (options) {
-          options.dsn = fakeDsn;
-          options.addIntegration(integration);
-        },
-      );
+      await Sentry.init(options: options, (options) {
+        options.dsn = fakeDsn;
+        options.addIntegration(integration);
+      });
 
       expect(integration.callCalls, 1);
     });
@@ -222,14 +208,10 @@ void main() {
     test('should add default integrations', () async {
       late SentryOptions optionsReference;
       final options = SentryOptions(dsn: fakeDsn)..devMode = true;
-      await Sentry.init(
-        options: options,
-        (options) {
-          options.dsn = fakeDsn;
-          optionsReference = options;
-        },
-        appRunner: appRunner,
-      );
+      await Sentry.init(options: options, (options) {
+        options.dsn = fakeDsn;
+        optionsReference = options;
+      }, appRunner: appRunner);
       expect(
         optionsReference.integrations
             .whereType<IsolateErrorIntegration>()
@@ -244,31 +226,29 @@ void main() {
       );
     }, onPlatform: {'browser': Skip()});
 
-    test('should add only web compatible default integrations', () async {
-      final options = SentryOptions(dsn: fakeDsn)..devMode = true;
-      await Sentry.init(
-        options: options,
-        (options) {
+    test(
+      'should add only web compatible default integrations',
+      () async {
+        final options = SentryOptions(dsn: fakeDsn)..devMode = true;
+        await Sentry.init(options: options, (options) {
           options.dsn = fakeDsn;
           expect(
             options.integrations.whereType<IsolateErrorIntegration>().length,
             0,
           );
-        },
-      );
-    }, onPlatform: {'vm': Skip()});
+        });
+      },
+      onPlatform: {'vm': Skip()},
+    );
 
     test('should close integrations', () async {
       final integration = MockIntegration();
 
       final options = SentryOptions(dsn: fakeDsn)..devMode = true;
-      await Sentry.init(
-        options: options,
-        (options) {
-          options.dsn = fakeDsn;
-          options.addIntegration(integration);
-        },
-      );
+      await Sentry.init(options: options, (options) {
+        options.dsn = fakeDsn;
+        options.addIntegration(integration);
+      });
 
       await Sentry.close();
 
@@ -278,16 +258,13 @@ void main() {
 
     test('$DeduplicationEventProcessor is added on init', () async {
       final options = SentryOptions(dsn: fakeDsn)..devMode = true;
-      await Sentry.init(
-        options: options,
-        (options) {
-          options.dsn = fakeDsn;
-          final count = options.eventProcessors
-              .whereType<DeduplicationEventProcessor>()
-              .length;
-          expect(count, 1);
-        },
-      );
+      await Sentry.init(options: options, (options) {
+        options.dsn = fakeDsn;
+        final count = options.eventProcessors
+            .whereType<DeduplicationEventProcessor>()
+            .length;
+        expect(count, 1);
+      });
     });
 
     test('should complete when appRunner completes', () async {
@@ -316,32 +293,34 @@ void main() {
     });
   });
 
-  test('should complete when appRunner is not called in runZonedGuarded',
-      () async {
-    final completer = Completer();
-    var completed = false;
+  test(
+    'should complete when appRunner is not called in runZonedGuarded',
+    () async {
+      final completer = Completer();
+      var completed = false;
 
-    final options = SentryOptions(dsn: fakeDsn)..devMode = true;
-    final init = Sentry.init(
-      options: options,
-      (options) {
-        options.dsn = fakeDsn;
-      },
-      appRunner: () => completer.future,
-      callAppRunnerInRunZonedGuarded: false,
-    ).whenComplete(() => completed = true);
+      final options = SentryOptions(dsn: fakeDsn)..devMode = true;
+      final init = Sentry.init(
+        options: options,
+        (options) {
+          options.dsn = fakeDsn;
+        },
+        appRunner: () => completer.future,
+        callAppRunnerInRunZonedGuarded: false,
+      ).whenComplete(() => completed = true);
 
-    await Future(() {
-      // We make the expectation only after all microtasks have completed,
-      // that Sentry.init might have scheduled.
-      expect(completed, false);
-    });
+      await Future(() {
+        // We make the expectation only after all microtasks have completed,
+        // that Sentry.init might have scheduled.
+        expect(completed, false);
+      });
 
-    completer.complete();
-    await init;
+      completer.complete();
+      await init;
 
-    expect(completed, true);
-  });
+      expect(completed, true);
+    },
+  );
 
   test('options.environment debug', () async {
     final sentryOptions = SentryOptions(dsn: fakeDsn)
@@ -350,63 +329,54 @@ void main() {
 
     final options = SentryOptions();
     options.devMode = true;
-    await Sentry.init(
-      (options) {
-        options.dsn = fakeDsn;
-        expect(options.environment, 'debug');
-        expect(options.debug, false);
-      },
-      options: sentryOptions,
-    );
+    await Sentry.init((options) {
+      options.dsn = fakeDsn;
+      expect(options.environment, 'debug');
+      expect(options.debug, false);
+    }, options: sentryOptions);
   });
 
   test('options.environment profile', () async {
-    final sentryOptions =
-        SentryOptions(dsn: fakeDsn, checker: FakePlatformChecker.profileMode())
-          ..devMode = true;
+    final sentryOptions = SentryOptions(
+      dsn: fakeDsn,
+      checker: FakePlatformChecker.profileMode(),
+    )..devMode = true;
 
-    await Sentry.init(
-      (options) {
-        options.dsn = fakeDsn;
-        expect(options.environment, 'profile');
-        expect(options.debug, false);
-      },
-      options: sentryOptions,
-    );
+    await Sentry.init((options) {
+      options.dsn = fakeDsn;
+      expect(options.environment, 'profile');
+      expect(options.debug, false);
+    }, options: sentryOptions);
   });
 
   test('options.environment production (defaultEnvironment)', () async {
-    final sentryOptions =
-        SentryOptions(dsn: fakeDsn, checker: FakePlatformChecker.releaseMode())
-          ..devMode = true;
-    await Sentry.init(
-      (options) {
-        options.dsn = fakeDsn;
-        expect(options.environment, 'production');
-        expect(options.debug, false);
-      },
-      options: sentryOptions,
-    );
+    final sentryOptions = SentryOptions(
+      dsn: fakeDsn,
+      checker: FakePlatformChecker.releaseMode(),
+    )..devMode = true;
+    await Sentry.init((options) {
+      options.dsn = fakeDsn;
+      expect(options.environment, 'production');
+      expect(options.debug, false);
+    }, options: sentryOptions);
   });
 
   test('options.logger is set by setting the debug flag', () async {
-    final sentryOptions =
-        SentryOptions(dsn: fakeDsn, checker: FakePlatformChecker.debugMode())
-          ..devMode = true;
+    final sentryOptions = SentryOptions(
+      dsn: fakeDsn,
+      checker: FakePlatformChecker.debugMode(),
+    )..devMode = true;
 
-    await Sentry.init(
-      (options) {
-        options.dsn = fakeDsn;
-        options.debug = true;
-        // ignore: deprecated_member_use_from_same_package
-        expect(options.logger, isNot(noOpLogger));
+    await Sentry.init((options) {
+      options.dsn = fakeDsn;
+      options.debug = true;
+      // ignore: deprecated_member_use_from_same_package
+      expect(options.logger, isNot(noOpLogger));
 
-        options.debug = false;
-        // ignore: deprecated_member_use_from_same_package
-        expect(options.logger, noOpLogger);
-      },
-      options: sentryOptions,
-    );
+      options.debug = false;
+      // ignore: deprecated_member_use_from_same_package
+      expect(options.logger, noOpLogger);
+    }, options: sentryOptions);
 
     // ignore: deprecated_member_use_from_same_package
     expect(sentryOptions.logger, isNot(dartLogger));
@@ -422,12 +392,9 @@ void main() {
         ..logger = fixture.mockLogger;
 
       final exception = Exception("Exception in options callback");
-      await Sentry.init(
-        (options) async {
-          throw exception;
-        },
-        options: sentryOptions,
-      );
+      await Sentry.init((options) async {
+        throw exception;
+      }, options: sentryOptions);
 
       expect(fixture.loggedException, exception);
       expect(fixture.loggedLevel, SentryLevel.error);
@@ -444,12 +411,9 @@ void main() {
         ..logger = fixture.mockLogger;
 
       final exception = Exception("Exception in options callback");
-      await Sentry.init(
-        (options) async {
-          throw exception;
-        },
-        options: sentryOptions,
-      );
+      await Sentry.init((options) async {
+        throw exception;
+      }, options: sentryOptions);
 
       expect(fixture.loggedException, exception);
       expect(fixture.loggedLevel, SentryLevel.error);

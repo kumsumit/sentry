@@ -46,14 +46,11 @@ class SentrySpanContext {
     required this.operation,
     this.description,
     this.origin,
-  })  : traceId = traceId ?? SentryId.newId(),
-        spanId = spanId ?? SpanId.newId();
+  }) : traceId = traceId ?? SentryId.newId(),
+       spanId = spanId ?? SpanId.newId();
 
   @internal
-  SentryTraceContext toTraceContext({
-    bool? sampled,
-    SpanStatus? status,
-  }) {
+  SentryTraceContext toTraceContext({bool? sampled, SpanStatus? status}) {
     return SentryTraceContext(
       operation: operation,
       traceId: traceId,

@@ -25,10 +25,7 @@ void main() {
       );
       options.devMode = true;
 
-      await Sentry.init(
-        (options) => options,
-        options: options,
-      );
+      await Sentry.init((options) => options, options: options);
 
       expect(options.dsn, fakeDsn);
       expect(options.environment, 'prod');
@@ -46,10 +43,7 @@ void main() {
       );
       options.devMode = true;
 
-      await Sentry.init(
-        (options) => options,
-        options: options,
-      );
+      await Sentry.init((options) => options, options: options);
 
       expect(options.dsn, 'foo-bar');
       expect(options.environment, 'staging');

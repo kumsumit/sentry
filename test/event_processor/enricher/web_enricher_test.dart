@@ -1,4 +1,6 @@
 @TestOn('browser')
+library;
+
 import 'dart:html' as html;
 
 import 'package:sentry/sentry.dart';
@@ -42,12 +44,7 @@ void main() {
 
     test('adds header to request if request already exists', () {
       var event = SentryEvent(
-        request: SentryRequest(
-          url: 'foo.bar',
-          headers: {
-            'foo': 'bar',
-          },
-        ),
+        request: SentryRequest(url: 'foo.bar', headers: {'foo': 'bar'}),
       );
       var enricher = fixture.getSut();
       event = enricher.apply(event)!;
@@ -61,10 +58,7 @@ void main() {
       var event = SentryEvent(
         request: SentryRequest(
           url: 'foo.bar',
-          headers: {
-            'Authorization': 'foo',
-            'authorization': 'bar',
-          },
+          headers: {'Authorization': 'foo', 'authorization': 'bar'},
         ),
       );
       var enricher = fixture.getSut();
@@ -78,9 +72,7 @@ void main() {
       var event = SentryEvent(
         request: SentryRequest(
           url: 'foo.bar',
-          headers: {
-            'User-Agent': 'best browser agent',
-          },
+          headers: {'User-Agent': 'best browser agent'},
         ),
       );
       var enricher = fixture.getSut();
@@ -131,12 +123,8 @@ void main() {
             screenWidthPixels: 1920,
             screenDensity: 2,
           ),
-          operatingSystem: SentryOperatingSystem(
-            name: 'sentry_os',
-          ),
-          culture: SentryCulture(
-            timezone: 'foo_timezone',
-          ),
+          operatingSystem: SentryOperatingSystem(name: 'sentry_os'),
+          culture: SentryCulture(timezone: 'foo_timezone'),
         ),
       );
 
@@ -145,10 +133,7 @@ void main() {
       final event = enricher.apply(fakeEvent);
 
       // contexts.device
-      expect(
-        event?.contexts.device?.online,
-        fakeEvent.contexts.device?.online,
-      );
+      expect(event?.contexts.device?.online, fakeEvent.contexts.device?.online);
       expect(
         event?.contexts.device?.memorySize,
         fakeEvent.contexts.device?.memorySize,
@@ -183,12 +168,10 @@ void main() {
 
     test('$WebEnricherEventProcessor gets added on init', () async {
       late SentryOptions sentryOptions;
-      await Sentry.init(
-        (options) {
-          options.dsn = fakeDsn;
-          sentryOptions = options;
-        },
-      );
+      await Sentry.init((options) {
+        options.dsn = fakeDsn;
+        sentryOptions = options;
+      });
       await Sentry.close();
 
       final ioEnricherCount = sentryOptions.eventProcessors
@@ -202,12 +185,10 @@ void main() {
 class Fixture {
   WebEnricherEventProcessor getSut() {
     final options = SentryOptions(
-        dsn: fakeDsn,
-        checker: MockPlatformChecker(hasNativeIntegration: false));
-
-    return WebEnricherEventProcessor(
-      html.window,
-      options,
+      dsn: fakeDsn,
+      checker: MockPlatformChecker(hasNativeIntegration: false),
     );
+
+    return WebEnricherEventProcessor(html.window, options);
   }
 }

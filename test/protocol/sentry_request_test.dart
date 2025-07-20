@@ -32,19 +32,13 @@ void main() {
     test('toJson', () {
       final json = sentryRequest.toJson();
 
-      expect(
-        DeepCollectionEquality().equals(sentryRequestJson, json),
-        true,
-      );
+      expect(DeepCollectionEquality().equals(sentryRequestJson, json), true);
     });
     test('fromJson', () {
       final sentryRequest = SentryRequest.fromJson(sentryRequestJson);
       final json = sentryRequest.toJson();
 
-      expect(
-        DeepCollectionEquality().equals(sentryRequestJson, json),
-        true,
-      );
+      expect(DeepCollectionEquality().equals(sentryRequestJson, json), true);
     });
   });
 

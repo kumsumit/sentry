@@ -11,10 +11,8 @@ class SentryTracesSampler {
   final SentryOptions _options;
   final Random _random;
 
-  SentryTracesSampler(
-    this._options, {
-    Random? random,
-  }) : _random = random ?? Random();
+  SentryTracesSampler(this._options, {Random? random})
+    : _random = random ?? Random();
 
   SentryTracesSamplingDecision sample(SentrySamplingContext samplingContext) {
     final samplingDecision =
@@ -53,8 +51,9 @@ class SentryTracesSampler {
     }
 
     double? optionsRate = _options.tracesSampleRate;
-    double? defaultRate =
-        _options.enableTracing == true ? _defaultSampleRate : null;
+    double? defaultRate = _options.enableTracing == true
+        ? _defaultSampleRate
+        : null;
     double? optionsOrDefaultRate = optionsRate ?? defaultRate;
 
     if (optionsOrDefaultRate != null) {

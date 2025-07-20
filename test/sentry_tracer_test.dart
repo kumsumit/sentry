@@ -69,21 +69,28 @@ void main() {
     });
 
     test(
-        'tracer finish sets given end timestamp to all children while finishing them',
-        () async {
-      final sut = fixture.getSut();
+      'tracer finish sets given end timestamp to all children while finishing them',
+      () async {
+        final sut = fixture.getSut();
 
-      final childA = sut.startChild('operation-a', description: 'description');
-      final childB = sut.startChild('operation-b', description: 'description');
-      final endTimestamp = getUtcDateTime();
+        final childA = sut.startChild(
+          'operation-a',
+          description: 'description',
+        );
+        final childB = sut.startChild(
+          'operation-b',
+          description: 'description',
+        );
+        final endTimestamp = getUtcDateTime();
 
-      await sut.finish(endTimestamp: endTimestamp);
-      await childA.finish();
-      await childB.finish();
+        await sut.finish(endTimestamp: endTimestamp);
+        await childA.finish();
+        await childB.finish();
 
-      expect(childA.endTimestamp, endTimestamp);
-      expect(childB.endTimestamp, endTimestamp);
-    });
+        expect(childA.endTimestamp, endTimestamp);
+        expect(childB.endTimestamp, endTimestamp);
+      },
+    );
 
     test('tracer finishes unfinished spans', () async {
       final sut = fixture.getSut();
@@ -205,8 +212,10 @@ void main() {
     test('toSentryTrace returns trace header', () {
       final sut = fixture.getSut();
 
-      expect(sut.toSentryTrace().value,
-          '${sut.context.traceId}-${sut.context.spanId}-1');
+      expect(
+        sut.toSentryTrace().value,
+        '${sut.context.traceId}-${sut.context.spanId}-1',
+      );
     });
 
     test('finish isnt allowed to be called twice', () async {
@@ -331,22 +340,29 @@ void main() {
     });
 
     test(
-        'tracer without finish will not be finished when children are finished',
-        () async {
-      final sut = fixture.getSut(waitForChildren: true);
+      'tracer without finish will not be finished when children are finished',
+      () async {
+        final sut = fixture.getSut(waitForChildren: true);
 
-      final childA = sut.startChild('operation-a', description: 'description');
-      final childB = sut.startChild('operation-b', description: 'description');
+        final childA = sut.startChild(
+          'operation-a',
+          description: 'description',
+        );
+        final childB = sut.startChild(
+          'operation-b',
+          description: 'description',
+        );
 
-      await childA.finish();
-      expect(sut.finished, false);
+        await childA.finish();
+        expect(sut.finished, false);
 
-      await childB.finish();
-      expect(sut.finished, false);
+        await childB.finish();
+        expect(sut.finished, false);
 
-      await sut.finish();
-      expect(sut.finished, true);
-    });
+        await sut.finish();
+        expect(sut.finished, true);
+      },
+    );
 
     test('end trimmed to last child', () async {
       final sut = fixture.getSut(trimEnd: true);
@@ -460,11 +476,9 @@ void main() {
     });
 
     SentryTracer getSut({SentryTracesSamplingDecision? samplingDecision}) {
-      final decision = samplingDecision ??
-          SentryTracesSamplingDecision(
-            true,
-            sampleRate: 1.0,
-          );
+      final decision =
+          samplingDecision ??
+          SentryTracesSamplingDecision(true, sampleRate: 1.0);
       final _context = SentryTransactionContext(
         'name',
         'op',
@@ -501,10 +515,7 @@ void main() {
     });
 
     test('sets transactionNameSource to source if not given', () {
-      final _context = SentryTransactionContext(
-        'name',
-        'op',
-      );
+      final _context = SentryTransactionContext('name', 'op');
 
       final tracer = SentryTracer(_context, _hub);
       expect(tracer.transactionNameSource, SentryTransactionNameSource.custom);
@@ -512,10 +523,11 @@ void main() {
 
     test('formats the sample rate correctly', () {
       final sut = getSut(
-          samplingDecision: SentryTracesSamplingDecision(
-        true,
-        sampleRate: 0.00000021,
-      ));
+        samplingDecision: SentryTracesSamplingDecision(
+          true,
+          sampleRate: 0.00000021,
+        ),
+      );
       final baggage = sut.toBaggageHeader();
 
       final newBaggage = SentryBaggage.fromHeader(baggage!.value);
@@ -536,11 +548,9 @@ void main() {
     });
 
     SentryTracer getSut({SentryTracesSamplingDecision? samplingDecision}) {
-      final decision = samplingDecision ??
-          SentryTracesSamplingDecision(
-            true,
-            sampleRate: 1.0,
-          );
+      final decision =
+          samplingDecision ??
+          SentryTracesSamplingDecision(true, sampleRate: 1.0);
       final _context = SentryTransactionContext(
         'name',
         'op',
@@ -573,10 +583,7 @@ class Fixture {
 
   final client = MockSentryClient();
 
-  final user = SentryUser(
-    id: 'id',
-    segment: 'segment',
-  );
+  final user = SentryUser(id: 'id', segment: 'segment');
 
   final hub = MockHub();
 

@@ -46,12 +46,12 @@ class SentryRuntime {
 
   /// Deserializes a [SentryRuntime] from JSON [Map].
   factory SentryRuntime.fromJson(Map<String, dynamic> data) => SentryRuntime(
-        name: data['name'],
-        version: data['version'],
-        compiler: data['compiler'],
-        rawDescription: data['raw_description'],
-        build: data['build'],
-      );
+    name: data['name'],
+    version: data['version'],
+    compiler: data['compiler'],
+    rawDescription: data['raw_description'],
+    build: data['build'],
+  );
 
   /// Produces a [Map] that can be serialized to JSON.
   Map<String, dynamic> toJson() {
@@ -65,13 +65,13 @@ class SentryRuntime {
   }
 
   SentryRuntime clone() => SentryRuntime(
-        key: key,
-        name: name,
-        version: version,
-        compiler: compiler,
-        rawDescription: rawDescription,
-        build: build,
-      );
+    key: key,
+    name: name,
+    version: version,
+    compiler: compiler,
+    rawDescription: rawDescription,
+    build: build,
+  );
 
   SentryRuntime copyWith({
     String? key,
@@ -80,13 +80,12 @@ class SentryRuntime {
     String? compiler,
     String? rawDescription,
     String? build,
-  }) =>
-      SentryRuntime(
-        key: key ?? this.key,
-        name: name ?? this.name,
-        version: version ?? this.version,
-        compiler: compiler ?? this.compiler,
-        rawDescription: rawDescription ?? this.rawDescription,
-        build: build ?? this.build,
-      );
+  }) => SentryRuntime(
+    key: key ?? this.key,
+    name: name ?? this.name,
+    version: version ?? this.version,
+    compiler: compiler ?? this.compiler,
+    rawDescription: rawDescription ?? this.rawDescription,
+    build: build ?? this.build,
+  );
 }

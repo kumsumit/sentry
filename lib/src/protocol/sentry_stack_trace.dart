@@ -10,8 +10,8 @@ class SentryStackTrace {
     Map<String, String>? registers,
     this.lang,
     this.snapshot,
-  })  : _frames = frames,
-        _registers = Map.from(registers ?? {});
+  }) : _frames = frames,
+       _registers = Map.from(registers ?? {});
 
   final List<SentryStackFrame>? _frames;
 
@@ -50,8 +50,8 @@ class SentryStackTrace {
     return SentryStackTrace(
       frames: framesJson != null
           ? framesJson
-              .map((frameJson) => SentryStackFrame.fromJson(frameJson))
-              .toList()
+                .map((frameJson) => SentryStackFrame.fromJson(frameJson))
+                .toList()
           : [],
       registers: json['registers'],
       lang: json['lang'],
@@ -63,8 +63,9 @@ class SentryStackTrace {
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
       if (_frames?.isNotEmpty ?? false)
-        'frames':
-            _frames?.map((frame) => frame.toJson()).toList(growable: false),
+        'frames': _frames
+            ?.map((frame) => frame.toJson())
+            .toList(growable: false),
       if (_registers?.isNotEmpty ?? false) 'registers': _registers,
       if (lang != null) 'lang': lang,
       if (snapshot != null) 'snapshot': snapshot,
@@ -74,9 +75,8 @@ class SentryStackTrace {
   SentryStackTrace copyWith({
     List<SentryStackFrame>? frames,
     Map<String, String>? registers,
-  }) =>
-      SentryStackTrace(
-        frames: frames ?? this.frames,
-        registers: registers ?? this.registers,
-      );
+  }) => SentryStackTrace(
+    frames: frames ?? this.frames,
+    registers: registers ?? this.registers,
+  );
 }

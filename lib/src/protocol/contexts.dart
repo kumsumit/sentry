@@ -20,16 +20,16 @@ class Contexts extends MapView<String, dynamic> {
     SentryTraceContext? trace,
     SentryResponse? response,
   }) : super({
-          SentryDevice.type: device,
-          SentryOperatingSystem.type: operatingSystem,
-          SentryRuntime.listType: runtimes ?? [],
-          SentryApp.type: app,
-          SentryBrowser.type: browser,
-          SentryGpu.type: gpu,
-          SentryCulture.type: culture,
-          SentryTraceContext.type: trace,
-          SentryResponse.type: response,
-        });
+         SentryDevice.type: device,
+         SentryOperatingSystem.type: operatingSystem,
+         SentryRuntime.listType: runtimes ?? [],
+         SentryApp.type: app,
+         SentryBrowser.type: browser,
+         SentryGpu.type: gpu,
+         SentryCulture.type: culture,
+         SentryTraceContext.type: trace,
+         SentryResponse.type: response,
+       });
 
   /// Deserializes [Contexts] from JSON [Map].
   factory Contexts.fromJson(Map<String, dynamic> data) {
@@ -39,7 +39,8 @@ class Contexts extends MapView<String, dynamic> {
           : null,
       operatingSystem: data[SentryOperatingSystem.type] != null
           ? SentryOperatingSystem.fromJson(
-              Map.from(data[SentryOperatingSystem.type]))
+              Map.from(data[SentryOperatingSystem.type]),
+            )
           : null,
       app: data[SentryApp.type] != null
           ? SentryApp.fromJson(Map.from(data[SentryApp.type]))
@@ -239,19 +240,20 @@ class Contexts extends MapView<String, dynamic> {
   }
 
   Contexts clone() {
-    final copy = Contexts(
-      device: device?.clone(),
-      operatingSystem: operatingSystem?.clone(),
-      app: app?.clone(),
-      browser: browser?.clone(),
-      culture: culture?.clone(),
-      gpu: gpu?.clone(),
-      trace: trace?.clone(),
-      response: response?.clone(),
-      runtimes: runtimes.map((runtime) => runtime.clone()).toList(),
-    )..addEntries(
-        entries.where((element) => !_defaultFields.contains(element.key)),
-      );
+    final copy =
+        Contexts(
+          device: device?.clone(),
+          operatingSystem: operatingSystem?.clone(),
+          app: app?.clone(),
+          browser: browser?.clone(),
+          culture: culture?.clone(),
+          gpu: gpu?.clone(),
+          trace: trace?.clone(),
+          response: response?.clone(),
+          runtimes: runtimes.map((runtime) => runtime.clone()).toList(),
+        )..addEntries(
+          entries.where((element) => !_defaultFields.contains(element.key)),
+        );
 
     return copy;
   }
@@ -278,8 +280,8 @@ class Contexts extends MapView<String, dynamic> {
         trace: trace ?? this.trace,
         response: response ?? this.response,
       )..addEntries(
-          entries.where((element) => !_defaultFields.contains(element.key)),
-        );
+        entries.where((element) => !_defaultFields.contains(element.key)),
+      );
 
   static const _defaultFields = [
     SentryApp.type,

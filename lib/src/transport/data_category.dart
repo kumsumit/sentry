@@ -7,7 +7,7 @@ enum DataCategory {
   transaction,
   attachment,
   security,
-  unknown
+  unknown,
 }
 
 extension DataCategoryExtension on DataCategory {

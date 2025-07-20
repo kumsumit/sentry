@@ -11,9 +11,7 @@ EnricherEventProcessor enricherEventProcessor(SentryOptions options) {
 /// Uses Darts [Platform](https://api.dart.dev/stable/dart-io/Platform-class.html)
 /// class to read information.
 class IoEnricherEventProcessor implements EnricherEventProcessor {
-  IoEnricherEventProcessor(
-    this._options,
-  );
+  IoEnricherEventProcessor(this._options);
 
   final SentryOptions _options;
 
@@ -43,9 +41,7 @@ class IoEnricherEventProcessor implements EnricherEventProcessor {
 
     contexts['dart_context'] = _getDartContext();
 
-    return event.copyWith(
-      contexts: contexts,
-    );
+    return event.copyWith(contexts: contexts);
   }
 
   List<SentryRuntime> _getRuntimes(List<SentryRuntime>? runtimes) {
@@ -58,10 +54,7 @@ class IoEnricherEventProcessor implements EnricherEventProcessor {
     if (runtimes == null) {
       return [dartRuntime];
     }
-    return [
-      ...runtimes,
-      dartRuntime,
-    ];
+    return [...runtimes, dartRuntime];
   }
 
   Map<String, dynamic> _getDartContext() {

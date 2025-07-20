@@ -12,8 +12,9 @@ class SentryStackTraceFactory {
   final _absRegex = RegExp(r'^\s*#[0-9]+ +abs +([A-Fa-f0-9]+)');
   final _frameRegex = RegExp(r'^\s*#', multiLine: true);
 
-  static final SentryStackFrame _asynchronousGapFrameJson =
-      SentryStackFrame(absPath: '<asynchronous suspension>');
+  static final SentryStackFrame _asynchronousGapFrameJson = SentryStackFrame(
+    absPath: '<asynchronous suspension>',
+  );
 
   static const _sentryPackagesIdentifier = <String>[
     'sentry',
@@ -81,7 +82,8 @@ class SentryStackTraceFactory {
 
       final startOffset = _frameRegex.firstMatch(stackTrace)?.start ?? 0;
       return Chain.parse(
-          startOffset == 0 ? stackTrace : stackTrace.substring(startOffset));
+        startOffset == 0 ? stackTrace : stackTrace.substring(startOffset),
+      );
     }
     return Chain([]);
   }
@@ -115,8 +117,9 @@ class SentryStackTraceFactory {
       // least we get an indication something's wrong and are able to fix it.
     }
 
-    final fileName =
-        frame.uri.pathSegments.isNotEmpty ? frame.uri.pathSegments.last : null;
+    final fileName = frame.uri.pathSegments.isNotEmpty
+        ? frame.uri.pathSegments.last
+        : null;
     final abs = '$eventOrigin${_absolutePathForCrashReport(frame)}';
 
     var sentryStackFrame = SentryStackFrame(

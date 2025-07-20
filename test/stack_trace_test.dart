@@ -16,17 +16,14 @@ void main() {
     test('marks dart: frames as not app frames', () {
       final frame = Frame(Uri.parse('dart:core'), 1, 2, 'buzz');
 
-      expect(
-        Fixture().getSut().encodeStackTraceFrame(frame)!.toJson(),
-        {
-          'abs_path': '${eventOrigin}dart:core',
-          'function': 'buzz',
-          'lineno': 1,
-          'colno': 2,
-          'in_app': false,
-          'filename': 'core'
-        },
-      );
+      expect(Fixture().getSut().encodeStackTraceFrame(frame)!.toJson(), {
+        'abs_path': '${eventOrigin}dart:core',
+        'function': 'buzz',
+        'lineno': 1,
+        'colno': 2,
+        'in_app': false,
+        'filename': 'core',
+      });
     });
 
     test('cleans absolute paths', () {
@@ -40,14 +37,16 @@ void main() {
     test('send exception package', () {
       final frame = Frame(Uri.parse('package:toolkit/baz.dart'), 1, 2, 'buzz');
       final encodedFrame = Fixture()
-          .getSut(inAppExcludes: ['toolkit']).encodeStackTraceFrame(frame)!;
+          .getSut(inAppExcludes: ['toolkit'])
+          .encodeStackTraceFrame(frame)!;
       expect(encodedFrame.package, 'toolkit');
     });
 
     test('apply inAppExcludes', () {
       final frame = Frame(Uri.parse('package:toolkit/baz.dart'), 1, 2, 'buzz');
       final serializedFrame = Fixture()
-          .getSut(inAppExcludes: ['toolkit']).encodeStackTraceFrame(frame)!;
+          .getSut(inAppExcludes: ['toolkit'])
+          .encodeStackTraceFrame(frame)!;
 
       expect(serializedFrame.inApp, false);
     });
@@ -55,14 +54,19 @@ void main() {
     test('apply inAppIncludes', () {
       final frame = Frame(Uri.parse('package:toolkit/baz.dart'), 1, 2, 'buzz');
       final serializedFrame = Fixture()
-          .getSut(inAppIncludes: ['toolkit']).encodeStackTraceFrame(frame)!;
+          .getSut(inAppIncludes: ['toolkit'])
+          .encodeStackTraceFrame(frame)!;
 
       expect(serializedFrame.inApp, true);
     });
 
     test('flutter package is not inApp', () {
-      final frame =
-          Frame(Uri.parse('package:flutter/material.dart'), 1, 2, 'buzz');
+      final frame = Frame(
+        Uri.parse('package:flutter/material.dart'),
+        1,
+        2,
+        'buzz',
+      );
       final serializedFrame = Fixture().getSut().encodeStackTraceFrame(frame)!;
 
       expect(serializedFrame.inApp, false);
@@ -70,9 +74,9 @@ void main() {
 
     test('apply inAppIncludes with precedence', () {
       final frame = Frame(Uri.parse('package:toolkit/baz.dart'), 1, 2, 'buzz');
-      final serializedFrame = Fixture().getSut(
-          inAppExcludes: ['toolkit'],
-          inAppIncludes: ['toolkit']).encodeStackTraceFrame(frame)!;
+      final serializedFrame = Fixture()
+          .getSut(inAppExcludes: ['toolkit'], inAppIncludes: ['toolkit'])
+          .encodeStackTraceFrame(frame)!;
 
       expect(serializedFrame.inApp, true);
     });
@@ -115,7 +119,8 @@ void main() {
           .getStackFrames('''
 #0      baz (file:///pathto/test.dart:50:3)
 #1      bar (file:///pathto/test.dart:46:9)
-      ''').map((frame) => frame.toJson());
+      ''')
+          .map((frame) => frame.toJson());
 
       expect(frames, [
         {
@@ -124,7 +129,7 @@ void main() {
           'lineno': 46,
           'colno': 9,
           'in_app': true,
-          'filename': 'test.dart'
+          'filename': 'test.dart',
         },
         {
           'abs_path': '${eventOrigin}test.dart',
@@ -132,7 +137,7 @@ void main() {
           'lineno': 50,
           'colno': 3,
           'in_app': true,
-          'filename': 'test.dart'
+          'filename': 'test.dart',
         },
       ]);
     });
@@ -144,7 +149,8 @@ void main() {
 #0      baz (file:///pathto/test.dart:50:3)
 <asynchronous suspension>
 #1      bar (file:///pathto/test.dart:46:9)
-      ''').map((frame) => frame.toJson());
+      ''')
+          .map((frame) => frame.toJson());
 
       expect(frames, [
         {
@@ -153,18 +159,16 @@ void main() {
           'lineno': 46,
           'colno': 9,
           'in_app': true,
-          'filename': 'test.dart'
+          'filename': 'test.dart',
         },
-        {
-          'abs_path': '<asynchronous suspension>',
-        },
+        {'abs_path': '<asynchronous suspension>'},
         {
           'abs_path': '${eventOrigin}test.dart',
           'function': 'baz',
           'lineno': 50,
           'colno': 3,
           'in_app': true,
-          'filename': 'test.dart'
+          'filename': 'test.dart',
         },
       ]);
     });
@@ -200,19 +204,10 @@ isolate_instructions: 10fa27070, vm_instructions: 10fa21e20
             .getStackFrames(traceString)
             .map((frame) => frame.toJson());
 
-        expect(
-            frames,
-            [
-              {
-                'platform': 'native',
-                'instruction_addr': '0x000000723d637527',
-              },
-              {
-                'platform': 'native',
-                'instruction_addr': '0x000000723d6346d7',
-              },
-            ],
-            reason: "Failed to parse StackTrace:$traceString");
+        expect(frames, [
+          {'platform': 'native', 'instruction_addr': '0x000000723d637527'},
+          {'platform': 'native', 'instruction_addr': '0x000000723d6346d7'},
+        ], reason: "Failed to parse StackTrace:$traceString");
       }
     });
 
@@ -223,14 +218,15 @@ isolate_instructions: 10fa27070, vm_instructions: 10fa21e20
 #0 asyncThrows (file:/foo/bar/main.dart:404)
 #1 MainScaffold.build.<anonymous closure> (package:example/main.dart:131)
 #2 PlatformDispatcher._dispatchPointerDataPacket (dart:ui/platform_dispatcher.dart:341)
-            ''').map((frame) => frame.toJson());
+            ''')
+          .map((frame) => frame.toJson());
       expect(frames, [
         {
           'filename': 'platform_dispatcher.dart',
           'function': 'PlatformDispatcher._dispatchPointerDataPacket',
           'lineno': 341,
           'abs_path': '${eventOrigin}dart:ui/platform_dispatcher.dart',
-          'in_app': false
+          'in_app': false,
         },
         {
           'filename': 'main.dart',
@@ -238,29 +234,31 @@ isolate_instructions: 10fa27070, vm_instructions: 10fa21e20
           'function': 'MainScaffold.build.<fn>',
           'lineno': 131,
           'abs_path': '${eventOrigin}package:example/main.dart',
-          'in_app': true
+          'in_app': true,
         },
         {
           'filename': 'main.dart',
           'function': 'asyncThrows',
           'lineno': 404,
           'abs_path': '${eventOrigin}main.dart',
-          'in_app': true
-        }
+          'in_app': true,
+        },
       ]);
     });
 
     test('remove frames if only async gap is left', () {
       final frames = Fixture()
           .getSut(considerInAppFramesByDefault: true)
-          .getStackFrames(StackTrace.fromString('''
+          .getStackFrames(
+            StackTrace.fromString('''
 #0      SentryClient._prepareEvent (package:sentry/src/sentry_client.dart:206:33)
 #1      SentryClient.captureEvent (package:sentry/src/sentry_client.dart:74:34)
 #2      Hub.captureEvent (package:sentry/src/hub.dart:97:38)
 <asynchronous suspension>
 #3      LoggingIntegration._onLog (package:sentry_logging/src/logging_integration.dart:58:7)
 <asynchronous suspension>
-            '''))
+            '''),
+          )
           .map((frame) => frame.toJson());
       expect(frames.isEmpty, true);
     });

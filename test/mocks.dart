@@ -42,7 +42,7 @@ final fakeEvent = SentryEvent(
       type: 'navigation',
       data: {'screen': 'MainActivity', 'state': 'created'},
       level: SentryLevel.info,
-    )
+    ),
   ],
   contexts: Contexts(
     operatingSystem: const SentryOperatingSystem(
@@ -63,10 +63,7 @@ final fakeEvent = SentryEvent(
       deviceAppHash: '5afd3a6',
       startTime: DateTime.now().toUtc(),
     ),
-    browser: const SentryBrowser(
-      name: 'Firefox',
-      version: '42.0.1',
-    ),
+    browser: const SentryBrowser(name: 'Firefox', version: '42.0.1'),
     device: SentryDevice(
       name: 'SM-P900',
       family: 'SM-P900',
@@ -114,8 +111,8 @@ class FunctionEventProcessor implements EventProcessor {
   }
 }
 
-typedef EventProcessorFunction = SentryEvent? Function(SentryEvent event,
-    {Hint? hint});
+typedef EventProcessorFunction =
+    SentryEvent? Function(SentryEvent event, {Hint? hint});
 
 var fakeEnvelope = SentryEnvelope.fromEvent(
   fakeEvent,
@@ -143,7 +140,10 @@ class MockRateLimiter implements RateLimiter {
 
   @override
   void updateRetryAfterLimits(
-      String? sentryRateLimitHeader, String? retryAfterHeader, int errorCode) {
+    String? sentryRateLimitHeader,
+    String? retryAfterHeader,
+    int errorCode,
+  ) {
     this.sentryRateLimitHeader = sentryRateLimitHeader;
     this.retryAfterHeader = retryAfterHeader;
     this.errorCode = errorCode;

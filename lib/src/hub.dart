@@ -262,7 +262,9 @@ class Hub {
   }
 
   FutureOr<Scope> _cloneAndRunWithScope(
-      Scope scope, ScopeCallback? withScope) async {
+    Scope scope,
+    ScopeCallback? withScope,
+  ) async {
     if (withScope != null) {
       try {
         scope = scope.clone();
@@ -396,22 +398,21 @@ class Hub {
     bool? trimEnd,
     OnTransactionFinish? onFinish,
     Map<String, dynamic>? customSamplingContext,
-  }) =>
-      startTransactionWithContext(
-        SentryTransactionContext(
-          name,
-          operation,
-          description: description,
-          origin: SentryTraceOrigins.manual,
-        ),
-        startTimestamp: startTimestamp,
-        bindToScope: bindToScope,
-        waitForChildren: waitForChildren,
-        autoFinishAfter: autoFinishAfter,
-        trimEnd: trimEnd,
-        onFinish: onFinish,
-        customSamplingContext: customSamplingContext,
-      );
+  }) => startTransactionWithContext(
+    SentryTransactionContext(
+      name,
+      operation,
+      description: description,
+      origin: SentryTraceOrigins.manual,
+    ),
+    startTimestamp: startTimestamp,
+    bindToScope: bindToScope,
+    waitForChildren: waitForChildren,
+    autoFinishAfter: autoFinishAfter,
+    trimEnd: trimEnd,
+    onFinish: onFinish,
+    customSamplingContext: customSamplingContext,
+  );
 
   /// Creates a Transaction and returns the instance.
   ISentrySpan startTransactionWithContext(
@@ -436,13 +437,16 @@ class Hub {
       final item = _peek();
 
       final samplingContext = SentrySamplingContext(
-          transactionContext, customSamplingContext ?? {});
+        transactionContext,
+        customSamplingContext ?? {},
+      );
 
       // if transactionContext has no sampled decision, run the traces sampler
       if (transactionContext.samplingDecision == null) {
         final samplingDecision = _tracesSampler.sample(samplingContext);
-        transactionContext =
-            transactionContext.copyWith(samplingDecision: samplingDecision);
+        transactionContext = transactionContext.copyWith(
+          samplingDecision: samplingDecision,
+        );
       }
 
       if (transactionContext.origin == null) {
@@ -551,8 +555,7 @@ class Hub {
     dynamic throwable,
     ISentrySpan span,
     String transaction,
-  ) =>
-      _throwableToSpan.add(throwable, span, transaction);
+  ) => _throwableToSpan.add(throwable, span, transaction);
 
   SentryEvent _assignTraceContext(SentryEvent event) {
     // assign trace context
@@ -591,11 +594,7 @@ class _WeakMap {
 
   _WeakMap(this._options);
 
-  void add(
-    dynamic throwable,
-    ISentrySpan span,
-    String transaction,
-  ) {
+  void add(dynamic throwable, ISentrySpan span, String transaction) {
     if (throwable == null) {
       return;
     }

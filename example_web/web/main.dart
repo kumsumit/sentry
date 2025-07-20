@@ -33,7 +33,7 @@ Future<void> runApp() async {
       type: 'debug',
       data: {
         'admin': true,
-        'permissions': [1, 2, 3]
+        'permissions': [1, 2, 3],
       },
     ),
   );
@@ -57,14 +57,14 @@ Future<void> runApp() async {
     );
   });
 
-  querySelector('#btEvent')
-      ?.onClick
-      .listen((event) => captureCompleteExampleEvent());
+  querySelector(
+    '#btEvent',
+  )?.onClick.listen((event) => captureCompleteExampleEvent());
   querySelector('#btMessage')?.onClick.listen((event) => captureMessage());
   querySelector('#btException')?.onClick.listen((event) => captureException());
-  querySelector('#btUnhandledException')
-      ?.onClick
-      .listen((event) => captureUnhandledException());
+  querySelector(
+    '#btUnhandledException',
+  )?.onClick.listen((event) => captureUnhandledException());
 }
 
 Future<void> captureMessage() async {

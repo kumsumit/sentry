@@ -19,19 +19,13 @@ void main() {
     test('toJson', () {
       final json = sentryMessage.toJson();
 
-      expect(
-        DeepCollectionEquality().equals(sentryMessageJson, json),
-        true,
-      );
+      expect(DeepCollectionEquality().equals(sentryMessageJson, json), true);
     });
     test('fromJson', () {
       final sentryMessage = SentryMessage.fromJson(sentryMessageJson);
       final json = sentryMessage.toJson();
 
-      expect(
-        DeepCollectionEquality().equals(sentryMessageJson, json),
-        true,
-      );
+      expect(DeepCollectionEquality().equals(sentryMessageJson, json), true);
     });
   });
 
@@ -41,10 +35,7 @@ void main() {
 
       final copy = data.copyWith();
 
-      expect(
-        MapEquality().equals(data.toJson(), copy.toJson()),
-        true,
-      );
+      expect(MapEquality().equals(data.toJson(), copy.toJson()), true);
     });
 
     test('copyWith takes new values', () {

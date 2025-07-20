@@ -66,7 +66,8 @@ class SentryTracer extends ISentrySpan {
     _scheduleTimer();
     name = transactionContext.name;
     // always default to custom if not provided
-    transactionNameSource = transactionContext.transactionNameSource ??
+    transactionNameSource =
+        transactionContext.transactionNameSource ??
         SentryTransactionNameSource.custom;
     _trimEnd = trimEnd;
     _onFinish = onFinish;
@@ -83,7 +84,8 @@ class SentryTracer extends ISentrySpan {
 
       // remove span where its endTimestamp is before startTimestamp
       _children.removeWhere(
-          (span) => !_hasSpanSuitableTimestamps(span, commonEndTimestamp));
+        (span) => !_hasSpanSuitableTimestamps(span, commonEndTimestamp),
+      );
 
       // finish unfinished spans otherwise transaction gets dropped
       final spansToBeFinished = _children.where((span) => !span.finished);
@@ -101,8 +103,9 @@ class SentryTracer extends ISentrySpan {
             .map((child) => child.endTimestamp!);
 
         if (childEndTimestamps.isNotEmpty) {
-          final oldestChildEndTimestamp =
-              childEndTimestamps.reduce((a, b) => a.isAfter(b) ? a : b);
+          final oldestChildEndTimestamp = childEndTimestamps.reduce(
+            (a, b) => a.isAfter(b) ? a : b,
+          );
           if (_rootEndTimestamp.isAfter(oldestChildEndTimestamp)) {
             _rootEndTimestamp = oldestChildEndTimestamp;
           }
@@ -131,10 +134,7 @@ class SentryTracer extends ISentrySpan {
 
       final transaction = SentryTransaction(this);
       transaction.measurements.addAll(_measurements);
-      await _hub.captureTransaction(
-        transaction,
-        traceContext: traceContext(),
-      );
+      await _hub.captureTransaction(transaction, traceContext: traceContext());
     }
   }
 
@@ -221,10 +221,11 @@ class SentryTracer extends ISentrySpan {
     }
 
     final context = SentrySpanContext(
-        traceId: _rootSpan.context.traceId,
-        parentSpanId: parentSpanId,
-        operation: operation,
-        description: description);
+      traceId: _rootSpan.context.traceId,
+      parentSpanId: parentSpanId,
+      operation: operation,
+      description: description,
+    );
 
     final child = SentrySpan(
       this,
@@ -240,9 +241,7 @@ class SentryTracer extends ISentrySpan {
     return child;
   }
 
-  Future<void> _finishedCallback({
-    DateTime? endTimestamp,
-  }) async {
+  Future<void> _finishedCallback({DateTime? endTimestamp}) async {
     final finishStatus = _finishStatus;
     if (finishStatus.finishing) {
       await finish(status: finishStatus.status, endTimestamp: endTimestamp);
@@ -302,9 +301,11 @@ class SentryTracer extends ISentrySpan {
   }
 
   bool _hasSpanSuitableTimestamps(
-          SentrySpan span, DateTime endTimestampCandidate) =>
-      !span.startTimestamp
-          .isAfter((span.endTimestamp ?? endTimestampCandidate));
+    SentrySpan span,
+    DateTime endTimestampCandidate,
+  ) => !span.startTimestamp.isAfter(
+    (span.endTimestamp ?? endTimestampCandidate),
+  );
 
   @override
   void setMeasurement(String name, num value, {SentryMeasurementUnit? unit}) {
@@ -343,8 +344,9 @@ class SentryTracer extends ISentrySpan {
       environment: _hub.options.environment,
       userId: null, // because of PII not sending it for now
       userSegment: user?.segment,
-      transaction:
-          _isHighQualityTransactionName(transactionNameSource) ? name : null,
+      transaction: _isHighQualityTransactionName(transactionNameSource)
+          ? name
+          : null,
       sampleRate: _sampleRateToString(_rootSpan.samplingDecision?.sampleRate),
     );
 

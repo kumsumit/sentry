@@ -1,4 +1,5 @@
 @TestOn('vm')
+library;
 
 import 'package:sentry/src/hub.dart';
 import 'package:sentry/src/protocol/span_status.dart';
@@ -39,8 +40,10 @@ void main() {
 
       hub.startTransaction('name', 'operation', bindToScope: true);
 
-      await SentryIsolate.handleIsolateError(
-          hub, [exception.toString(), stackTrace]);
+      await SentryIsolate.handleIsolateError(hub, [
+        exception.toString(),
+        stackTrace,
+      ]);
 
       final span = hub.getSpan();
 

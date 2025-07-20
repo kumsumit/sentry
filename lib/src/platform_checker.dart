@@ -5,10 +5,8 @@ import 'platform/platform.dart';
 class PlatformChecker {
   static const _jsUtil = 'dart.library.js_util';
 
-  PlatformChecker({
-    this.platform = instance,
-    bool? isWeb,
-  }) : isWeb = isWeb ?? _isWebWithWasmSupport();
+  PlatformChecker({this.platform = instance, bool? isWeb})
+    : isWeb = isWeb ?? _isWebWithWasmSupport();
 
   /// Check if running in release/production environment
   bool isReleaseMode() {
@@ -31,8 +29,8 @@ class PlatformChecker {
     return isReleaseMode()
         ? 'release'
         : isDebugMode()
-            ? 'debug'
-            : 'profile';
+        ? 'debug'
+        : 'profile';
   }
 
   /// Indicates whether a native integration is available.

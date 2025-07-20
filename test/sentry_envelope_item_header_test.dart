@@ -11,7 +11,7 @@ void main() {
       final expected = <String, dynamic>{
         'content_type': 'application/json',
         'type': 'event',
-        'length': 3
+        'length': 3,
       };
       expect(await sut.toJson(), expected);
     });

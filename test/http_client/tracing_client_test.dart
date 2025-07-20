@@ -22,11 +22,7 @@ void main() {
       final sut = fixture.getSut(
         client: fixture.getClient(statusCode: 200, reason: 'OK'),
       );
-      final tr = fixture._hub.startTransaction(
-        'name',
-        'op',
-        bindToScope: true,
-      );
+      final tr = fixture._hub.startTransaction('name', 'op', bindToScope: true);
 
       await sut.get(requestUri);
 
@@ -48,14 +44,8 @@ void main() {
     });
 
     test('finish span if errored request', () async {
-      final sut = fixture.getSut(
-        client: createThrowingClient(),
-      );
-      final tr = fixture._hub.startTransaction(
-        'name',
-        'op',
-        bindToScope: true,
-      );
+      final sut = fixture.getSut(client: createThrowingClient());
+      final tr = fixture._hub.startTransaction('name', 'op', bindToScope: true);
 
       try {
         await sut.get(requestUri);
@@ -72,14 +62,8 @@ void main() {
     });
 
     test('associate exception to span if errored request', () async {
-      final sut = fixture.getSut(
-        client: createThrowingClient(),
-      );
-      final tr = fixture._hub.startTransaction(
-        'name',
-        'op',
-        bindToScope: true,
-      );
+      final sut = fixture.getSut(client: createThrowingClient());
+      final tr = fixture._hub.startTransaction('name', 'op', bindToScope: true);
 
       dynamic exception;
       try {
@@ -101,11 +85,7 @@ void main() {
       final sut = fixture.getSut(
         client: fixture.getClient(statusCode: 200, reason: 'OK'),
       );
-      final tr = fixture._hub.startTransaction(
-        'name',
-        'op',
-        bindToScope: true,
-      );
+      final tr = fixture._hub.startTransaction('name', 'op', bindToScope: true);
 
       final response = await sut.get(requestUri);
 
@@ -114,19 +94,17 @@ void main() {
       final tracer = (tr as SentryTracer);
       final span = tracer.children.first;
 
-      expect(response.request!.headers['sentry-trace'],
-          span.toSentryTrace().value);
+      expect(
+        response.request!.headers['sentry-trace'],
+        span.toSentryTrace().value,
+      );
     });
 
     test('captured span adds baggage header to the request', () async {
       final sut = fixture.getSut(
         client: fixture.getClient(statusCode: 200, reason: 'OK'),
       );
-      final tr = fixture._hub.startTransaction(
-        'name',
-        'op',
-        bindToScope: true,
-      );
+      final tr = fixture._hub.startTransaction('name', 'op', bindToScope: true);
 
       final response = await sut.get(requestUri);
 
@@ -143,17 +121,10 @@ void main() {
 
     test('captured span do not add headers if origins not set', () async {
       final sut = fixture.getSut(
-        client: fixture.getClient(
-          statusCode: 200,
-          reason: 'OK',
-        ),
+        client: fixture.getClient(statusCode: 200, reason: 'OK'),
         tracePropagationTargets: ['nope'],
       );
-      final tr = fixture._hub.startTransaction(
-        'name',
-        'op',
-        bindToScope: true,
-      );
+      final tr = fixture._hub.startTransaction('name', 'op', bindToScope: true);
 
       final response = await sut.get(requestUri);
 
@@ -175,22 +146,26 @@ void main() {
       await sut.get(requestUri);
     });
 
-    test('set headers from propagationContext when tracing is disabled',
-        () async {
-      fixture._options.enableTracing = false;
-      final sut = fixture.getSut(
-        client: fixture.getClient(statusCode: 200, reason: 'OK'),
-      );
+    test(
+      'set headers from propagationContext when tracing is disabled',
+      () async {
+        fixture._options.enableTracing = false;
+        final sut = fixture.getSut(
+          client: fixture.getClient(statusCode: 200, reason: 'OK'),
+        );
 
-      final propagationContext = fixture._hub.scope.propagationContext;
-      propagationContext.baggage = SentryBaggage({'foo': 'bar'});
+        final propagationContext = fixture._hub.scope.propagationContext;
+        propagationContext.baggage = SentryBaggage({'foo': 'bar'});
 
-      final response = await sut.get(requestUri);
+        final response = await sut.get(requestUri);
 
-      expect(response.request!.headers['sentry-trace'],
-          propagationContext.toSentryTrace().value);
-      expect(response.request!.headers['baggage'], 'foo=bar');
-    });
+        expect(
+          response.request!.headers['sentry-trace'],
+          propagationContext.toSentryTrace().value,
+        );
+        expect(response.request!.headers['baggage'], 'foo=bar');
+      },
+    );
 
     test('set headers from propagationContext when no transaction', () async {
       final sut = fixture.getSut(
@@ -202,20 +177,20 @@ void main() {
 
       final response = await sut.get(requestUri);
 
-      expect(response.request!.headers['sentry-trace'],
-          propagationContext.toSentryTrace().value);
+      expect(
+        response.request!.headers['sentry-trace'],
+        propagationContext.toSentryTrace().value,
+      );
       expect(response.request!.headers['baggage'], 'foo=bar');
     });
   });
 }
 
 MockClient createThrowingClient() {
-  return MockClient(
-    (request) async {
-      expect(request.url, requestUri);
-      throw TestException();
-    },
-  );
+  return MockClient((request) async {
+    expect(request.url, requestUri);
+    throw TestException();
+  });
 }
 
 class Fixture {
@@ -237,10 +212,7 @@ class Fixture {
       _hub.options.tracePropagationTargets.addAll(tracePropagationTargets);
     }
     final mc = client ?? getClient();
-    return TracingClient(
-      client: mc,
-      hub: _hub,
-    );
+    return TracingClient(client: mc, hub: _hub);
   }
 
   MockClient getClient({int statusCode = 200, String? reason}) {

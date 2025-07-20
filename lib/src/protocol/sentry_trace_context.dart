@@ -68,15 +68,15 @@ class SentryTraceContext {
   }
 
   SentryTraceContext clone() => SentryTraceContext(
-        operation: operation,
-        traceId: traceId,
-        spanId: spanId,
-        description: description,
-        status: status,
-        parentSpanId: parentSpanId,
-        sampled: sampled,
-        origin: origin,
-      );
+    operation: operation,
+    traceId: traceId,
+    spanId: spanId,
+    description: description,
+    status: status,
+    parentSpanId: parentSpanId,
+    sampled: sampled,
+    origin: origin,
+  );
 
   SentryTraceContext({
     SentryId? traceId,
@@ -87,12 +87,13 @@ class SentryTraceContext {
     this.description,
     this.status,
     this.origin,
-  })  : traceId = traceId ?? SentryId.newId(),
-        spanId = spanId ?? SpanId.newId();
+  }) : traceId = traceId ?? SentryId.newId(),
+       spanId = spanId ?? SpanId.newId();
 
   @internal
   factory SentryTraceContext.fromPropagationContext(
-      PropagationContext propagationContext) {
+    PropagationContext propagationContext,
+  ) {
     return SentryTraceContext(
       traceId: propagationContext.traceId,
       spanId: propagationContext.spanId,

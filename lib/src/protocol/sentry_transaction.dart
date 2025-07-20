@@ -16,59 +16,50 @@ class SentryTransaction extends SentryEvent {
 
   SentryTransaction(
     this._tracer, {
-    SentryId? eventId,
+    super.eventId,
     DateTime? timestamp,
-    String? platform,
-    String? serverName,
-    String? release,
-    String? dist,
-    String? environment,
+    super.platform,
+    super.serverName,
+    super.release,
+    super.dist,
+    super.environment,
     String? transaction,
     dynamic throwable,
     Map<String, String>? tags,
     @Deprecated(
-        'Additional Data is deprecated in favor of structured [Contexts] and should be avoided when possible')
+      'Additional Data is deprecated in favor of structured [Contexts] and should be avoided when possible',
+    )
     Map<String, dynamic>? extra,
-    SentryUser? user,
-    Contexts? contexts,
-    List<Breadcrumb>? breadcrumbs,
-    SdkVersion? sdk,
-    SentryRequest? request,
+    super.user,
+    super.contexts,
+    super.breadcrumbs,
+    super.sdk,
+    super.request,
     String? type,
     Map<String, SentryMeasurement>? measurements,
     SentryTransactionInfo? transactionInfo,
   }) : super(
-          eventId: eventId,
-          timestamp: timestamp ?? _tracer.endTimestamp,
-          platform: platform,
-          serverName: serverName,
-          release: release,
-          dist: dist,
-          environment: environment,
-          transaction: transaction ?? _tracer.name,
-          throwable: throwable ?? _tracer.throwable,
-          tags: tags ?? _tracer.tags,
-          // ignore: deprecated_member_use_from_same_package
-          extra: extra ?? _tracer.data,
-          user: user,
-          contexts: contexts,
-          breadcrumbs: breadcrumbs,
-          sdk: sdk,
-          request: request,
-          type: _type,
-        ) {
+         timestamp: timestamp ?? _tracer.endTimestamp,
+         transaction: transaction ?? _tracer.name,
+         throwable: throwable ?? _tracer.throwable,
+         tags: tags ?? _tracer.tags,
+         // ignore: deprecated_member_use_from_same_package
+         extra: extra ?? _tracer.data,
+         type: _type,
+       ) {
     startTimestamp = _tracer.startTimestamp;
 
     final spanContext = _tracer.context;
     spans = _tracer.children;
     this.measurements = measurements ?? {};
 
-    this.contexts.trace = spanContext.toTraceContext(
+    contexts.trace = spanContext.toTraceContext(
       sampled: _tracer.samplingDecision?.sampled,
       status: _tracer.status,
     );
 
-    this.transactionInfo = transactionInfo ??
+    this.transactionInfo =
+        transactionInfo ??
         SentryTransactionInfo(_tracer.transactionNameSource.name);
   }
 
@@ -79,8 +70,9 @@ class SentryTransaction extends SentryEvent {
     if (spans.isNotEmpty) {
       json['spans'] = spans.map((e) => e.toJson()).toList(growable: false);
     }
-    json['start_timestamp'] =
-        formatDateAsIso8601WithMillisPrecision(startTimestamp);
+    json['start_timestamp'] = formatDateAsIso8601WithMillisPrecision(
+      startTimestamp,
+    );
 
     if (measurements.isNotEmpty) {
       final map = <String, dynamic>{};
@@ -120,7 +112,8 @@ class SentryTransaction extends SentryEvent {
     String? culprit,
     Map<String, String>? tags,
     @Deprecated(
-        'Additional Data is deprecated in favor of structured [Contexts] and should be avoided when possible')
+      'Additional Data is deprecated in favor of structured [Contexts] and should be avoided when possible',
+    )
     Map<String, dynamic>? extra,
     List<String>? fingerprint,
     SentryUser? user,
@@ -134,30 +127,31 @@ class SentryTransaction extends SentryEvent {
     String? type,
     Map<String, SentryMeasurement>? measurements,
     SentryTransactionInfo? transactionInfo,
-  }) =>
-      SentryTransaction(
-        _tracer,
-        eventId: eventId ?? this.eventId,
-        timestamp: timestamp ?? this.timestamp,
-        platform: platform ?? this.platform,
-        serverName: serverName ?? this.serverName,
-        release: release ?? this.release,
-        dist: dist ?? this.dist,
-        environment: environment ?? this.environment,
-        transaction: transaction ?? this.transaction,
-        throwable: throwable ?? this.throwable,
-        tags: (tags != null ? Map.from(tags) : null) ?? this.tags,
-        // ignore: deprecated_member_use_from_same_package
-        extra: (extra != null ? Map.from(extra) : null) ?? this.extra,
-        user: user ?? this.user,
-        contexts: contexts ?? this.contexts,
-        breadcrumbs: (breadcrumbs != null ? List.from(breadcrumbs) : null) ??
-            this.breadcrumbs,
-        sdk: sdk ?? this.sdk,
-        request: request ?? this.request,
-        type: type ?? this.type,
-        measurements: (measurements != null ? Map.from(measurements) : null) ??
-            this.measurements,
-        transactionInfo: transactionInfo ?? this.transactionInfo,
-      );
+  }) => SentryTransaction(
+    _tracer,
+    eventId: eventId ?? this.eventId,
+    timestamp: timestamp ?? this.timestamp,
+    platform: platform ?? this.platform,
+    serverName: serverName ?? this.serverName,
+    release: release ?? this.release,
+    dist: dist ?? this.dist,
+    environment: environment ?? this.environment,
+    transaction: transaction ?? this.transaction,
+    throwable: throwable ?? this.throwable,
+    tags: (tags != null ? Map.from(tags) : null) ?? this.tags,
+    // ignore: deprecated_member_use_from_same_package
+    extra: (extra != null ? Map.from(extra) : null) ?? this.extra,
+    user: user ?? this.user,
+    contexts: contexts ?? this.contexts,
+    breadcrumbs:
+        (breadcrumbs != null ? List.from(breadcrumbs) : null) ??
+        this.breadcrumbs,
+    sdk: sdk ?? this.sdk,
+    request: request ?? this.request,
+    type: type ?? this.type,
+    measurements:
+        (measurements != null ? Map.from(measurements) : null) ??
+        this.measurements,
+    transactionInfo: transactionInfo ?? this.transactionInfo,
+  );
 }

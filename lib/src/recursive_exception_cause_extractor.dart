@@ -16,8 +16,10 @@ class RecursiveExceptionCauseExtractor {
     final circularityDetector = <dynamic>{};
 
     var currentException = exception;
-    ExceptionCause? currentExceptionCause =
-        ExceptionCause(exception, stackTrace);
+    ExceptionCause? currentExceptionCause = ExceptionCause(
+      exception,
+      stackTrace,
+    );
 
     while (currentException != null &&
         currentExceptionCause != null &&
@@ -28,8 +30,9 @@ class RecursiveExceptionCauseExtractor {
           ? currentException.throwable
           : currentException;
 
-      final extractor =
-          _options.exceptionCauseExtractor(extractionSourceSource.runtimeType);
+      final extractor = _options.exceptionCauseExtractor(
+        extractionSourceSource.runtimeType,
+      );
 
       try {
         currentExceptionCause = extractor?.cause(extractionSourceSource);

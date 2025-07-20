@@ -3,10 +3,7 @@ import 'package:sentry/sentry.dart';
 import 'package:test/test.dart';
 
 void main() {
-  final sentryPackage = SentryPackage(
-    'name',
-    'version',
-  );
+  final sentryPackage = SentryPackage('name', 'version');
 
   final sentryPackageJson = <String, dynamic>{
     'name': 'name',
@@ -17,19 +14,13 @@ void main() {
     test('toJson', () {
       final json = sentryPackage.toJson();
 
-      expect(
-        MapEquality().equals(sentryPackageJson, json),
-        true,
-      );
+      expect(MapEquality().equals(sentryPackageJson, json), true);
     });
     test('fromJson', () {
       final sentryPackage = SdkVersion.fromJson(sentryPackageJson);
       final json = sentryPackage.toJson();
 
-      expect(
-        MapEquality().equals(sentryPackageJson, json),
-        true,
-      );
+      expect(MapEquality().equals(sentryPackageJson, json), true);
     });
   });
 
@@ -39,18 +30,12 @@ void main() {
 
       final copy = data.copyWith();
 
-      expect(
-        MapEquality().equals(data.toJson(), copy.toJson()),
-        true,
-      );
+      expect(MapEquality().equals(data.toJson(), copy.toJson()), true);
     });
     test('copyWith takes new values', () {
       final data = sentryPackage;
 
-      final copy = data.copyWith(
-        name: 'name1',
-        version: 'version1',
-      );
+      final copy = data.copyWith(name: 'name1', version: 'version1');
 
       expect('name1', copy.name);
       expect('version1', copy.version);

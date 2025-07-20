@@ -1,4 +1,5 @@
-import '_io_platform.dart' if (dart.library.html) '_web_platform.dart'
+import '_io_platform.dart'
+    if (dart.library.html) '_web_platform.dart'
     as platform;
 
 const Platform instance = platform.instance;

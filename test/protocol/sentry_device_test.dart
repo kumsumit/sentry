@@ -87,20 +87,14 @@ void main() {
     test('toJson', () {
       final json = sentryDevice.toJson();
 
-      expect(
-        MapEquality().equals(sentryDeviceJson, json),
-        true,
-      );
+      expect(MapEquality().equals(sentryDeviceJson, json), true);
     });
 
     test('fromJson', () {
       final sentryDevice = SentryDevice.fromJson(sentryDeviceJson);
       final json = sentryDevice.toJson();
 
-      expect(
-        MapEquality().equals(sentryDeviceJson, json),
-        true,
-      );
+      expect(MapEquality().equals(sentryDeviceJson, json), true);
     });
 
     test('fromJson double screen_height_pixels and screen_width_pixels', () {
@@ -110,10 +104,7 @@ void main() {
       final sentryDevice = SentryDevice.fromJson(sentryDeviceJson);
       final json = sentryDevice.toJson();
 
-      expect(
-        MapEquality().equals(sentryDeviceJson, json),
-        true,
-      );
+      expect(MapEquality().equals(sentryDeviceJson, json), true);
     });
 
     test('batery level converts int to double', () {
@@ -121,10 +112,7 @@ void main() {
 
       final sentryDevice = SentryDevice.fromJson(map);
 
-      expect(
-        sentryDevice.batteryLevel,
-        1.0,
-      );
+      expect(sentryDevice.batteryLevel, 1.0);
     });
 
     test('batery level maps double', () {
@@ -132,10 +120,7 @@ void main() {
 
       final sentryDevice = SentryDevice.fromJson(map);
 
-      expect(
-        sentryDevice.batteryLevel,
-        1.0,
-      );
+      expect(sentryDevice.batteryLevel, 1.0);
     });
 
     test('batery level ignores if not a num', () {
@@ -143,10 +128,7 @@ void main() {
 
       final sentryDevice = SentryDevice.fromJson(map);
 
-      expect(
-        sentryDevice.batteryLevel,
-        null,
-      );
+      expect(sentryDevice.batteryLevel, null);
     });
   });
 
@@ -156,10 +138,7 @@ void main() {
 
       final copy = data.copyWith();
 
-      expect(
-        MapEquality().equals(data.toJson(), copy.toJson()),
-        true,
-      );
+      expect(MapEquality().equals(data.toJson(), copy.toJson()), true);
     });
 
     test('copyWith takes new values', () {

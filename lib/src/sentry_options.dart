@@ -280,8 +280,10 @@ class SentryOptions {
   double? get tracesSampleRate => _tracesSampleRate;
 
   set tracesSampleRate(double? tracesSampleRate) {
-    assert(tracesSampleRate == null ||
-        (tracesSampleRate >= 0 && tracesSampleRate <= 1));
+    assert(
+      tracesSampleRate == null ||
+          (tracesSampleRate >= 0 && tracesSampleRate <= 1),
+    );
     _tracesSampleRate = tracesSampleRate;
   }
 
@@ -420,8 +422,9 @@ class SentryOptions {
   late SentryExceptionFactory exceptionFactory = SentryExceptionFactory(this);
 
   @internal
-  late SentryStackTraceFactory stackTraceFactory =
-      SentryStackTraceFactory(this);
+  late SentryStackTraceFactory stackTraceFactory = SentryStackTraceFactory(
+    this,
+  );
 
   void _debugLogger(
     SentryLevel level,
@@ -443,38 +446,34 @@ class SentryOptions {
 
 /// This function is called with an SDK specific event object and can return a modified event
 /// object or nothing to skip reporting the event
-typedef BeforeSendCallback = FutureOr<SentryEvent?> Function(
-  SentryEvent event, {
-  Hint? hint,
-});
+typedef BeforeSendCallback =
+    FutureOr<SentryEvent?> Function(SentryEvent event, {Hint? hint});
 
 /// This function is called with an SDK specific transaction object and can return a modified transaction
 /// object or nothing to skip reporting the transaction
-typedef BeforeSendTransactionCallback = FutureOr<SentryTransaction?> Function(
-  SentryTransaction transaction,
-);
+typedef BeforeSendTransactionCallback =
+    FutureOr<SentryTransaction?> Function(SentryTransaction transaction);
 
 /// This function is called with an SDK specific breadcrumb object before the breadcrumb is added
 /// to the scope. When nothing is returned from the function, the breadcrumb is dropped
-typedef BeforeBreadcrumbCallback = Breadcrumb? Function(
-  Breadcrumb? breadcrumb, {
-  Hint? hint,
-});
+typedef BeforeBreadcrumbCallback =
+    Breadcrumb? Function(Breadcrumb? breadcrumb, {Hint? hint});
 
 /// Used to provide timestamp for logging.
 typedef ClockProvider = DateTime Function();
 
 /// Logger interface to log useful debugging information if debug is enabled
-typedef SentryLogger = void Function(
-  SentryLevel level,
-  String message, {
-  String? logger,
-  Object? exception,
-  StackTrace? stackTrace,
-});
+typedef SentryLogger =
+    void Function(
+      SentryLevel level,
+      String message, {
+      String? logger,
+      Object? exception,
+      StackTrace? stackTrace,
+    });
 
-typedef TracesSamplerCallback = double? Function(
-    SentrySamplingContext samplingContext);
+typedef TracesSamplerCallback =
+    double? Function(SentrySamplingContext samplingContext);
 
 /// A NoOp logger that does nothing
 @Deprecated('Will be removed in v8. Disable [debug] instead')

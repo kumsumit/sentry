@@ -38,8 +38,9 @@ void main() {
 
       final clientReport = sut.flush();
 
-      final event = clientReport?.discardedEvents
-          .firstWhere((element) => element.category == DataCategory.error);
+      final event = clientReport?.discardedEvents.firstWhere(
+        (element) => element.category == DataCategory.error,
+      );
 
       expect(event?.reason, DiscardReason.rateLimitBackoff);
       expect(event?.category, DataCategory.error);
@@ -51,15 +52,19 @@ void main() {
 
       sut.recordLostEvent(DiscardReason.rateLimitBackoff, DataCategory.error);
       sut.recordLostEvent(
-          DiscardReason.rateLimitBackoff, DataCategory.transaction);
+        DiscardReason.rateLimitBackoff,
+        DataCategory.transaction,
+      );
 
       final clientReport = sut.flush();
 
-      final first = clientReport?.discardedEvents
-          .firstWhere((event) => event.category == DataCategory.error);
+      final first = clientReport?.discardedEvents.firstWhere(
+        (event) => event.category == DataCategory.error,
+      );
 
-      final second = clientReport?.discardedEvents
-          .firstWhere((event) => event.category == DataCategory.transaction);
+      final second = clientReport?.discardedEvents.firstWhere(
+        (event) => event.category == DataCategory.transaction,
+      );
 
       expect(first?.reason, DiscardReason.rateLimitBackoff);
       expect(first?.category, DataCategory.error);

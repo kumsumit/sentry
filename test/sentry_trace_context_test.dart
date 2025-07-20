@@ -26,7 +26,7 @@ void main() {
       'parent_span_id': '0000000000000000',
       'description': 'desc',
       'status': 'aborted',
-      'origin': 'auto.ui'
+      'origin': 'auto.ui',
     };
     final traceContext = SentryTraceContext.fromJson(map);
 
@@ -43,11 +43,12 @@ void main() {
 class Fixture {
   SentryTraceContext getSut() {
     return SentryTraceContext(
-        operation: 'op',
-        parentSpanId: SpanId.newId(),
-        description: 'desc',
-        sampled: true,
-        status: SpanStatus.aborted(),
-        origin: 'auto.ui');
+      operation: 'op',
+      parentSpanId: SpanId.newId(),
+      description: 'desc',
+      sampled: true,
+      status: SpanStatus.aborted(),
+      origin: 'auto.ui',
+    );
   }
 }

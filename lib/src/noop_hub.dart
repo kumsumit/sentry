@@ -35,8 +35,7 @@ class NoOpHub implements Hub {
     dynamic stackTrace,
     Hint? hint,
     ScopeCallback? withScope,
-  }) async =>
-      SentryId.empty();
+  }) async => SentryId.empty();
 
   @override
   Future<SentryId> captureException(
@@ -44,8 +43,7 @@ class NoOpHub implements Hub {
     dynamic stackTrace,
     Hint? hint,
     ScopeCallback? withScope,
-  }) async =>
-      SentryId.empty();
+  }) async => SentryId.empty();
 
   @override
   Future<SentryId> captureMessage(
@@ -55,8 +53,7 @@ class NoOpHub implements Hub {
     List? params,
     Hint? hint,
     ScopeCallback? withScope,
-  }) async =>
-      SentryId.empty();
+  }) async => SentryId.empty();
 
   @override
   Hub clone() => this;
@@ -80,8 +77,7 @@ class NoOpHub implements Hub {
   Future<SentryId> captureTransaction(
     SentryTransaction transaction, {
     SentryTraceContextHeader? traceContext,
-  }) async =>
-      SentryId.empty();
+  }) async => SentryId.empty();
 
   @override
   Future<void> captureUserFeedback(SentryUserFeedback userFeedback) async {}
@@ -98,8 +94,7 @@ class NoOpHub implements Hub {
     bool? trimEnd,
     OnTransactionFinish? onFinish,
     Map<String, dynamic>? customSamplingContext,
-  }) =>
-      NoOpSentrySpan();
+  }) => NoOpSentrySpan();
 
   @override
   ISentrySpan startTransactionWithContext(
@@ -111,8 +106,7 @@ class NoOpHub implements Hub {
     Duration? autoFinishAfter,
     bool? trimEnd,
     OnTransactionFinish? onFinish,
-  }) =>
-      NoOpSentrySpan();
+  }) => NoOpSentrySpan();
 
   @override
   ISentrySpan? getSpan() => null;

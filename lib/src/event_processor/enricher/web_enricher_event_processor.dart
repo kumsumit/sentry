@@ -4,17 +4,11 @@ import '../../../sentry.dart';
 import 'enricher_event_processor.dart';
 
 EnricherEventProcessor enricherEventProcessor(SentryOptions options) {
-  return WebEnricherEventProcessor(
-    html.window,
-    options,
-  );
+  return WebEnricherEventProcessor(html.window, options);
 }
 
 class WebEnricherEventProcessor implements EnricherEventProcessor {
-  WebEnricherEventProcessor(
-    this._window,
-    this._options,
-  );
+  WebEnricherEventProcessor(this._window, this._options);
 
   final html.Window _window;
 
@@ -50,9 +44,7 @@ class WebEnricherEventProcessor implements EnricherEventProcessor {
 
     final url = request?.url ?? _window.location.toString();
     return (request ?? SentryRequest(url: url))
-        .copyWith(
-          headers: header,
-        )
+        .copyWith(headers: header)
         .sanitized();
   }
 
@@ -61,7 +53,8 @@ class WebEnricherEventProcessor implements EnricherEventProcessor {
       online: device?.online ?? _window.navigator.onLine,
       memorySize: device?.memorySize ?? _getMemorySize(),
       orientation: device?.orientation ?? _getScreenOrientation(),
-      screenHeightPixels: device?.screenHeightPixels ??
+      screenHeightPixels:
+          device?.screenHeightPixels ??
           _window.screen?.available.height.toInt(),
       screenWidthPixels:
           device?.screenWidthPixels ?? _window.screen?.available.width.toInt(),

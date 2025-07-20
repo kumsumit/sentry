@@ -10,7 +10,7 @@ void main() {
 
   final sentryStackTraceJson = <String, dynamic>{
     'frames': [
-      {'abs_path': 'abs'}
+      {'abs_path': 'abs'},
     ],
     'registers': {'key': 'value'},
   };
@@ -19,19 +19,13 @@ void main() {
     test('toJson', () {
       final json = sentryStackTrace.toJson();
 
-      expect(
-        DeepCollectionEquality().equals(sentryStackTraceJson, json),
-        true,
-      );
+      expect(DeepCollectionEquality().equals(sentryStackTraceJson, json), true);
     });
     test('fromJson', () {
       final sentryStackTrace = SentryStackTrace.fromJson(sentryStackTraceJson);
       final json = sentryStackTrace.toJson();
 
-      expect(
-        DeepCollectionEquality().equals(sentryStackTraceJson, json),
-        true,
-      );
+      expect(DeepCollectionEquality().equals(sentryStackTraceJson, json), true);
     });
   });
 
@@ -50,19 +44,10 @@ void main() {
       final frames = [SentryStackFrame(absPath: 'abs1')];
       final registers = {'key1': 'value1'};
 
-      final copy = data.copyWith(
-        frames: frames,
-        registers: registers,
-      );
+      final copy = data.copyWith(frames: frames, registers: registers);
 
-      expect(
-        ListEquality().equals(frames, copy.frames),
-        true,
-      );
-      expect(
-        MapEquality().equals(registers, copy.registers),
-        true,
-      );
+      expect(ListEquality().equals(frames, copy.frames), true);
+      expect(MapEquality().equals(registers, copy.registers), true);
     });
   });
 }

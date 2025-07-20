@@ -85,40 +85,40 @@ class SentryGpu {
 
   /// Deserializes a [SentryGpu] from JSON [Map].
   factory SentryGpu.fromJson(Map<String, dynamic> data) => SentryGpu(
-        name: data['name'],
-        id: data['id'],
-        vendorId: data['vendor_id'],
-        vendorName: data['vendor_name'],
-        memorySize: data['memory_size'],
-        apiType: data['api_type'],
-        multiThreadedRendering: data['multi_threaded_rendering'],
-        version: data['version'],
-        npotSupport: data['npot_support'],
-        graphicsShaderLevel: data['graphics_shader_level'],
-        maxTextureSize: data['max_texture_size'],
-        supportsComputeShaders: data['supports_compute_shaders'],
-        supportsDrawCallInstancing: data['supports_draw_call_instancing'],
-        supportsGeometryShaders: data['supports_geometry_shaders'],
-        supportsRayTracing: data['supports_ray_tracing'],
-      );
+    name: data['name'],
+    id: data['id'],
+    vendorId: data['vendor_id'],
+    vendorName: data['vendor_name'],
+    memorySize: data['memory_size'],
+    apiType: data['api_type'],
+    multiThreadedRendering: data['multi_threaded_rendering'],
+    version: data['version'],
+    npotSupport: data['npot_support'],
+    graphicsShaderLevel: data['graphics_shader_level'],
+    maxTextureSize: data['max_texture_size'],
+    supportsComputeShaders: data['supports_compute_shaders'],
+    supportsDrawCallInstancing: data['supports_draw_call_instancing'],
+    supportsGeometryShaders: data['supports_geometry_shaders'],
+    supportsRayTracing: data['supports_ray_tracing'],
+  );
 
   SentryGpu clone() => SentryGpu(
-        name: name,
-        id: id,
-        vendorId: vendorId,
-        vendorName: vendorName,
-        memorySize: memorySize,
-        apiType: apiType,
-        multiThreadedRendering: multiThreadedRendering,
-        version: version,
-        npotSupport: npotSupport,
-        graphicsShaderLevel: graphicsShaderLevel,
-        maxTextureSize: maxTextureSize,
-        supportsComputeShaders: supportsComputeShaders,
-        supportsDrawCallInstancing: supportsDrawCallInstancing,
-        supportsGeometryShaders: supportsGeometryShaders,
-        supportsRayTracing: supportsRayTracing,
-      );
+    name: name,
+    id: id,
+    vendorId: vendorId,
+    vendorName: vendorName,
+    memorySize: memorySize,
+    apiType: apiType,
+    multiThreadedRendering: multiThreadedRendering,
+    version: version,
+    npotSupport: npotSupport,
+    graphicsShaderLevel: graphicsShaderLevel,
+    maxTextureSize: maxTextureSize,
+    supportsComputeShaders: supportsComputeShaders,
+    supportsDrawCallInstancing: supportsDrawCallInstancing,
+    supportsGeometryShaders: supportsGeometryShaders,
+    supportsRayTracing: supportsRayTracing,
+  );
 
   /// Produces a [Map] that can be serialized to JSON.
   Map<String, dynamic> toJson() {
@@ -163,26 +163,25 @@ class SentryGpu {
     bool? supportsDrawCallInstancing,
     bool? supportsGeometryShaders,
     bool? supportsRayTracing,
-  }) =>
-      SentryGpu(
-        name: name ?? this.name,
-        id: id ?? this.id,
-        vendorId: vendorId ?? this.vendorId,
-        vendorName: vendorName ?? this.vendorName,
-        memorySize: memorySize ?? this.memorySize,
-        apiType: apiType ?? this.apiType,
-        multiThreadedRendering:
-            multiThreadedRendering ?? this.multiThreadedRendering,
-        version: version ?? this.version,
-        npotSupport: npotSupport ?? this.npotSupport,
-        graphicsShaderLevel: graphicsShaderLevel ?? this.graphicsShaderLevel,
-        maxTextureSize: maxTextureSize ?? this.maxTextureSize,
-        supportsComputeShaders:
-            supportsComputeShaders ?? this.supportsComputeShaders,
-        supportsDrawCallInstancing:
-            supportsDrawCallInstancing ?? this.supportsDrawCallInstancing,
-        supportsGeometryShaders:
-            supportsGeometryShaders ?? this.supportsGeometryShaders,
-        supportsRayTracing: supportsRayTracing ?? this.supportsRayTracing,
-      );
+  }) => SentryGpu(
+    name: name ?? this.name,
+    id: id ?? this.id,
+    vendorId: vendorId ?? this.vendorId,
+    vendorName: vendorName ?? this.vendorName,
+    memorySize: memorySize ?? this.memorySize,
+    apiType: apiType ?? this.apiType,
+    multiThreadedRendering:
+        multiThreadedRendering ?? this.multiThreadedRendering,
+    version: version ?? this.version,
+    npotSupport: npotSupport ?? this.npotSupport,
+    graphicsShaderLevel: graphicsShaderLevel ?? this.graphicsShaderLevel,
+    maxTextureSize: maxTextureSize ?? this.maxTextureSize,
+    supportsComputeShaders:
+        supportsComputeShaders ?? this.supportsComputeShaders,
+    supportsDrawCallInstancing:
+        supportsDrawCallInstancing ?? this.supportsDrawCallInstancing,
+    supportsGeometryShaders:
+        supportsGeometryShaders ?? this.supportsGeometryShaders,
+    supportsRayTracing: supportsRayTracing ?? this.supportsRayTracing,
+  );
 }

@@ -44,16 +44,16 @@ class SentryUser {
     Map<String, dynamic>? data,
     @Deprecated('Will be removed in v8. Use [data] instead')
     Map<String, dynamic>? extras,
-  })  : assert(
-          id != null ||
-              username != null ||
-              email != null ||
-              ipAddress != null ||
-              segment != null,
-        ),
-        data = data == null ? null : Map.from(data),
-        // ignore: deprecated_member_use_from_same_package
-        extras = extras == null ? null : Map.from(extras);
+  }) : assert(
+         id != null ||
+             username != null ||
+             email != null ||
+             ipAddress != null ||
+             segment != null,
+       ),
+       data = data == null ? null : Map.from(data),
+       // ignore: deprecated_member_use_from_same_package
+       extras = extras == null ? null : Map.from(extras);
 
   /// A unique identifier of the user.
   final String? id;

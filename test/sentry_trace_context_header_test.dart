@@ -37,8 +37,10 @@ void main() {
     test('to baggage', () {
       final baggage = context.toBaggage();
 
-      expect(baggage.toHeaderString(),
-          'sentry-trace_id=${id.toString()},sentry-public_key=123,sentry-release=release,sentry-environment=environment,sentry-user_id=user_id,sentry-user_segment=user_segment,sentry-transaction=transaction,sentry-sample_rate=1.0');
+      expect(
+        baggage.toHeaderString(),
+        'sentry-trace_id=${id.toString()},sentry-public_key=123,sentry-release=release,sentry-environment=environment,sentry-user_id=user_id,sentry-user_segment=user_segment,sentry-transaction=transaction,sentry-sample_rate=1.0',
+      );
     });
   });
 }

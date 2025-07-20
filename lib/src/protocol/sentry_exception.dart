@@ -46,8 +46,9 @@ class SentryException {
       stackTrace: stackTraceJson != null
           ? SentryStackTrace.fromJson(stackTraceJson)
           : null,
-      mechanism:
-          mechanismJson != null ? Mechanism.fromJson(mechanismJson) : null,
+      mechanism: mechanismJson != null
+          ? Mechanism.fromJson(mechanismJson)
+          : null,
       threadId: json['thread_id'],
     );
   }
@@ -72,14 +73,13 @@ class SentryException {
     Mechanism? mechanism,
     int? threadId,
     dynamic throwable,
-  }) =>
-      SentryException(
-        type: type ?? this.type,
-        value: value ?? this.value,
-        module: module ?? this.module,
-        stackTrace: stackTrace ?? this.stackTrace,
-        mechanism: mechanism ?? this.mechanism,
-        threadId: threadId ?? this.threadId,
-        throwable: throwable ?? this.throwable,
-      );
+  }) => SentryException(
+    type: type ?? this.type,
+    value: value ?? this.value,
+    module: module ?? this.module,
+    stackTrace: stackTrace ?? this.stackTrace,
+    mechanism: mechanism ?? this.mechanism,
+    threadId: threadId ?? this.threadId,
+    throwable: throwable ?? this.throwable,
+  );
 }

@@ -84,11 +84,13 @@ void main() {
     options.sdk.addPackage('test', '1.2.3');
 
     expect(
-        options.sdk.packages
-            .where((element) =>
-                element.name == 'test' && element.version == '1.2.3')
-            .isNotEmpty,
-        true);
+      options.sdk.packages
+          .where(
+            (element) => element.name == 'test' && element.version == '1.2.3',
+          )
+          .isNotEmpty,
+      true,
+    );
   });
 
   test('SentryOptions has all targets by default', () {
@@ -100,8 +102,10 @@ void main() {
   test('SentryOptions has sentryClientName set', () {
     final options = SentryOptions(dsn: fakeDsn);
 
-    expect(options.sentryClientName,
-        '${sdkName(options.platformChecker.isWeb)}/$sdkVersion');
+    expect(
+      options.sentryClientName,
+      '${sdkName(options.platformChecker.isWeb)}/$sdkVersion',
+    );
   });
 
   test('SentryOptions has default idleTimeout', () {

@@ -49,14 +49,8 @@ void main() {
         packages: packages,
       );
 
-      expect(
-        ListEquality().equals(integrations, copy.integrations),
-        true,
-      );
-      expect(
-        ListEquality().equals(packages, copy.packages),
-        true,
-      );
+      expect(ListEquality().equals(integrations, copy.integrations), true);
+      expect(ListEquality().equals(packages, copy.packages), true);
       expect('name1', copy.name);
       expect('version1', copy.version);
     });
@@ -88,17 +82,14 @@ class Fixture {
     'version': 'version',
     'integrations': ['test'],
     'packages': [
-      {
-        'name': 'name',
-        'version': 'version',
-      }
+      {'name': 'name', 'version': 'version'},
     ],
   };
 
   SdkVersion getSut() => SdkVersion(
-        name: 'name',
-        version: 'version',
-        integrations: ['test'],
-        packages: [SentryPackage('name', 'version')],
-      );
+    name: 'name',
+    version: 'version',
+    integrations: ['test'],
+    packages: [SentryPackage('name', 'version')],
+  );
 }

@@ -33,8 +33,9 @@ class Scope {
     _transaction = transaction;
 
     if (_transaction != null && span != null) {
-      final currentTransaction =
-          (span is SentryTracer) ? (span as SentryTracer?) : null;
+      final currentTransaction = (span is SentryTracer)
+          ? (span as SentryTracer?)
+          : null;
       currentTransaction?.name = _transaction!;
     }
   }
@@ -58,7 +59,8 @@ class Scope {
   Future<void> setUser(SentryUser? user) async {
     _setUserSync(user);
     await _callScopeObservers(
-        (scopeObserver) async => await scopeObserver.setUser(user));
+      (scopeObserver) async => await scopeObserver.setUser(user),
+    );
   }
 
   List<String> _fingerprint = [];
@@ -108,7 +110,8 @@ class Scope {
     // if it's a List, it should not be a List<SentryRuntime> because it can't
     // be wrapped by the value object since it's a special property for having
     // multiple runtimes and it has a dedicated property within the Contexts class.
-    _contexts[key] = (value is num ||
+    _contexts[key] =
+        (value is num ||
             value is bool ||
             value is String ||
             (value is List &&
@@ -122,7 +125,8 @@ class Scope {
   Future<void> setContexts(String key, dynamic value) async {
     _setContextsSync(key, value);
     await _callScopeObservers(
-        (scopeObserver) async => await scopeObserver.setContexts(key, value));
+      (scopeObserver) async => await scopeObserver.setContexts(key, value),
+    );
   }
 
   /// Removes a value from the Scope's contexts
@@ -130,7 +134,8 @@ class Scope {
     _contexts.remove(key);
 
     await _callScopeObservers(
-        (scopeObserver) async => await scopeObserver.removeContexts(key));
+      (scopeObserver) async => await scopeObserver.removeContexts(key),
+    );
   }
 
   /// Scope's event processor list
@@ -197,8 +202,10 @@ class Scope {
   Future<void> addBreadcrumb(Breadcrumb breadcrumb, {Hint? hint}) async {
     final addedBreadcrumb = _addBreadCrumbSync(breadcrumb, hint: hint);
     if (addedBreadcrumb != null) {
-      await _callScopeObservers((scopeObserver) async =>
-          await scopeObserver.addBreadcrumb(addedBreadcrumb));
+      await _callScopeObservers(
+        (scopeObserver) async =>
+            await scopeObserver.addBreadcrumb(addedBreadcrumb),
+      );
     }
   }
 
@@ -218,7 +225,8 @@ class Scope {
   Future<void> clearBreadcrumbs() async {
     _clearBreadcrumbsSync();
     await _callScopeObservers(
-        (scopeObserver) async => await scopeObserver.clearBreadcrumbs());
+      (scopeObserver) async => await scopeObserver.clearBreadcrumbs(),
+    );
   }
 
   /// Adds an event processor
@@ -252,14 +260,16 @@ class Scope {
   Future<void> setTag(String key, String value) async {
     _setTagSync(key, value);
     await _callScopeObservers(
-        (scopeObserver) async => await scopeObserver.setTag(key, value));
+      (scopeObserver) async => await scopeObserver.setTag(key, value),
+    );
   }
 
   /// Removes a tag from the Scope
   Future<void> removeTag(String key) async {
     _tags.remove(key);
     await _callScopeObservers(
-        (scopeObserver) async => await scopeObserver.removeTag(key));
+      (scopeObserver) async => await scopeObserver.removeTag(key),
+    );
   }
 
   void _setExtraSync(String key, dynamic value) {
@@ -270,20 +280,19 @@ class Scope {
   Future<void> setExtra(String key, dynamic value) async {
     _setExtraSync(key, value);
     await _callScopeObservers(
-        (scopeObserver) async => await scopeObserver.setExtra(key, value));
+      (scopeObserver) async => await scopeObserver.setExtra(key, value),
+    );
   }
 
   /// Removes an extra from the Scope
   Future<void> removeExtra(String key) async {
     _extra.remove(key);
     await _callScopeObservers(
-        (scopeObserver) async => await scopeObserver.removeExtra(key));
+      (scopeObserver) async => await scopeObserver.removeExtra(key),
+    );
   }
 
-  Future<SentryEvent?> applyToEvent(
-    SentryEvent event, {
-    Hint? hint,
-  }) async {
+  Future<SentryEvent?> applyToEvent(SentryEvent event, {Hint? hint}) async {
     event = event.copyWith(
       transaction: event.transaction ?? transaction,
       user: _mergeUsers(user, event.user),
@@ -297,10 +306,11 @@ class Scope {
 
     if (event is! SentryTransaction) {
       event = event.copyWith(
-          fingerprint: (event.fingerprint?.isNotEmpty ?? false)
-              ? event.fingerprint
-              : _fingerprint,
-          level: level ?? event.level);
+        fingerprint: (event.fingerprint?.isNotEmpty ?? false)
+            ? event.fingerprint
+            : _fingerprint,
+        level: level ?? event.level,
+      );
     }
 
     _contexts.clone().forEach((key, value) {
@@ -323,8 +333,9 @@ class Scope {
           sampled: newSpan.samplingDecision?.sampled,
         );
       } else {
-        event.contexts.trace =
-            SentryTraceContext.fromPropagationContext(propagationContext);
+        event.contexts.trace = SentryTraceContext.fromPropagationContext(
+          propagationContext,
+        );
       }
     }
 
@@ -359,7 +370,9 @@ class Scope {
 
   /// Merge the scope contexts runtimes and the event contexts runtimes.
   void _mergeEventContextsRuntimes(
-      List<SentryRuntime> values, SentryEvent event) {
+    List<SentryRuntime> values,
+    SentryEvent event,
+  ) {
     for (final runtime in values) {
       event.contexts.addRuntime(runtime);
     }

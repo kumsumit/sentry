@@ -14,8 +14,9 @@ class SentryEnvelopeItem {
 
   /// Creates an [SentryEnvelopeItem] which sends [SentryTransaction].
   factory SentryEnvelopeItem.fromTransaction(SentryTransaction transaction) {
-    final cachedItem =
-        _CachedItem(() async => utf8JsonEncoder.convert(transaction.toJson()));
+    final cachedItem = _CachedItem(
+      () async => utf8JsonEncoder.convert(transaction.toJson()),
+    );
 
     final header = SentryEnvelopeItemHeader(
       SentryItemType.transaction,
@@ -40,8 +41,9 @@ class SentryEnvelopeItem {
 
   /// Create an [SentryEnvelopeItem] which sends [SentryUserFeedback].
   factory SentryEnvelopeItem.fromUserFeedback(SentryUserFeedback feedback) {
-    final cachedItem =
-        _CachedItem(() async => utf8JsonEncoder.convert(feedback.toJson()));
+    final cachedItem = _CachedItem(
+      () async => utf8JsonEncoder.convert(feedback.toJson()),
+    );
 
     final header = SentryEnvelopeItemHeader(
       SentryItemType.userFeedback,
@@ -53,8 +55,9 @@ class SentryEnvelopeItem {
 
   /// Create an [SentryEnvelopeItem] which holds the [SentryEvent] data.
   factory SentryEnvelopeItem.fromEvent(SentryEvent event) {
-    final cachedItem =
-        _CachedItem(() async => utf8JsonEncoder.convert(event.toJson()));
+    final cachedItem = _CachedItem(
+      () async => utf8JsonEncoder.convert(event.toJson()),
+    );
 
     return SentryEnvelopeItem(
       SentryEnvelopeItemHeader(
@@ -68,8 +71,9 @@ class SentryEnvelopeItem {
 
   /// Create an [SentryEnvelopeItem] which holds the [ClientReport] data.
   factory SentryEnvelopeItem.fromClientReport(ClientReport clientReport) {
-    final cachedItem =
-        _CachedItem(() async => utf8JsonEncoder.convert(clientReport.toJson()));
+    final cachedItem = _CachedItem(
+      () async => utf8JsonEncoder.convert(clientReport.toJson()),
+    );
 
     return SentryEnvelopeItem(
       SentryEnvelopeItemHeader(
